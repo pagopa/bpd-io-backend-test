@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: '71c99547-4327-4384-ba3c-34f197a2c919'
   imageRepository: 'cstarregistryazurecriobpddevbpdiobackendtest'
   containerRegistry: 'cstarregistry.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: 'Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'cstarregistry5508-auth'
 
