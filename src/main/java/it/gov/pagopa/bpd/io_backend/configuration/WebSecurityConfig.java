@@ -13,7 +13,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/pagopa/api/v1/user").permitAll()
+                .antMatchers("/bpd/pagopa/api/v1/user").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

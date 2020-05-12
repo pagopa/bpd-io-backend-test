@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-04-22T10:19:03.448Z")
 
 @Api(value = "user")
-@RequestMapping(value = "/pagopa/api/v1")
+@RequestMapping(value = "/bpd/pagopa/api/v1")
 public interface UserApi {
 
 	@ApiOperation(value = "Get user's data", nickname = "getUser", notes = "Returns the user data needed by PagoPA Wallet backend.", response = ExtendedPagoPAUser.class, authorizations = {
