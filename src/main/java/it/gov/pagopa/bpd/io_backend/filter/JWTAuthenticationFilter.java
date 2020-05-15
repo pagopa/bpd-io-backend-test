@@ -1,4 +1,4 @@
-package it.gov.pagopa.bpd.io_backend.configuration;
+package it.gov.pagopa.bpd.io_backend.filter;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;

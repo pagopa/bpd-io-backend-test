@@ -1,9 +1,8 @@
-package it.gov.pagopa.bpd.io_backend.api;
-
-import java.io.IOException;
+package it.gov.pagopa.bpd.io_backend.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-04-22T10:19:03.448Z")
 
