@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class TokenBuilder {
 
-    private static TokenBuilder istance = null;
+  private static TokenBuilder istance = null;
 
   private  TokenBuilder() {}
 
@@ -31,7 +31,8 @@ public class TokenBuilder {
                 .setExpiration(Date.from(Instant.now().plusSeconds(3600)))
                 .signWith(
                         SignatureAlgorithm.HS256,
-                        TextCodec.BASE64.decode("Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=")
+                        TextCodec.BASE64.decode(
+                                "Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=")
                 )
                 .compact();
         return  jws;
@@ -40,7 +41,8 @@ public class TokenBuilder {
     public static Claims decodeJWT(String jwt) {
         //This line will throw an exception if it is not a signed JWS (as expected)
         Claims claims = Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary("Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E="))
+                .setSigningKey(DatatypeConverter.parseBase64Binary(
+                        "Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E="))
                 .parseClaimsJws(jwt).getBody();
         return claims;
     }

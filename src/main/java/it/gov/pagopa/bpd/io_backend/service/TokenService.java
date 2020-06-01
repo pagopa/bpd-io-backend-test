@@ -5,8 +5,11 @@ import javax.validation.Valid;
 /**
  * A service to manage the Business Logic related to IO_Backend
  */
-public interface FiscalCodeValidationService {
+public interface TokenService {
 
     @Valid
-    String checkFiscalCode(String fiscalCode);
+    String buildToken(String token);
+
+    @Valid
+    String validateToken(String fiscalCode);
 }
