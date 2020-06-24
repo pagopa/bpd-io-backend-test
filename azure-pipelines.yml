@@ -3,7 +3,15 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- master
+  branches:
+    include:
+    - master
+    - develop
+    - features/*
+  paths:
+    include:
+    - src/*
+    - pom.xml
 
 resources:
 - repo: self
@@ -59,6 +67,7 @@ stages:
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
   jobs:
   - deployment: Deploy
