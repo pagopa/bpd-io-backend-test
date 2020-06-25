@@ -42,13 +42,13 @@ public interface UserApi {
             response = ExtendedPagoPAUser.class, authorizations = {
 			@Authorization(value = "Token") }, tags = {})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Found.", response = String.class),
+            @ApiResponse(code = 200, message = "Found.", response = ExtendedPagoPAUser.class),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 401, message = "Token null or invalid."),
             @ApiResponse(code = 500, message = "There was an error in retrieving the user data.",
                     response = ProblemJson.class)})
     @RequestMapping(value = "/user", produces = {"application/json"}, method = RequestMethod.GET)
-    ResponseEntity<String> getUser(
+    ResponseEntity<ExtendedPagoPAUser> getUser(
             @ApiParam(value = "", allowableValues = "")
             @Valid @RequestParam(value = "version", required = false) String version,
             @Valid @NotNull @NotBlank @RequestParam(value = "token", required = true) String token)
