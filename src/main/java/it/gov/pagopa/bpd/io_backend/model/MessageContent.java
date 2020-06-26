@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 @Data
@@ -12,8 +15,14 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class MessageContent {
 
+    @NotNull
+    @NotBlank
+    @Length(min = 10, max = 120)
     private String subject;
 
+    @NotNull
+    @NotBlank
+    @Length(min = 80, max = 10000)
     private String markdown;
 
     @JsonProperty("payment_data")
