@@ -1,16 +1,16 @@
 apiVersion : apps/v1beta1
 kind: Deployment
 metadata:
-  name: cstarregistryazurecriobpddevbpdiobackendtest 
+  name: cstariobackendtest 
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: cstarregistryazurecriobpddevbpdiobackendtest 
+        app: cstariobackendtest 
     spec:
       containers:
-        - name: cstarregistryazurecriobpddevbpdiobackendtest 
-          image: cstarregistry.azurecr.io/cstarregistryazurecriobpddevbpdiobackendtest
+        - name: cstariobackendtest 
+          image: cstarregistry.azurecr.io/cstariobackendtest
           ports:
           - containerPort: 8080
