@@ -1,5 +1,17 @@
-springfox.documentation.swagger.v2.path=/api-docs
-server.contextPath=/
-server.port=8081
-logging.level.root=ALL
-bpd.jwt.key=${BPD_JWT_KEY:}
+server:
+  port: 8081
+  contextPath: /
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+
+logging:
+  level:
+    root: INFO
+
+bpd:
+  jwt:
+    key: ${BPD_JWT_KEY:}

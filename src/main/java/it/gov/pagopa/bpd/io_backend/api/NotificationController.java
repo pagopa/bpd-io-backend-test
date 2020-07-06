@@ -1,5 +1,6 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
+import it.gov.pagopa.bpd.io_backend.model.MessageResponse;
 import it.gov.pagopa.bpd.io_backend.model.NotificationMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,8 @@ import java.util.UUID;
 public class NotificationController implements NotificationApi {
 
     @Override
-    public ResponseEntity<String> submitMessage(@Valid NotificationMessage notificationDTO) {
-        return new ResponseEntity<String>(UUID.randomUUID().toString(), HttpStatus.OK);
+    public ResponseEntity<MessageResponse> submitMessage(@Valid NotificationMessage notificationDTO) {
+        return new ResponseEntity<MessageResponse>(
+                MessageResponse.builder().id(UUID.randomUUID().toString()).build(), HttpStatus.OK);
     }
 }

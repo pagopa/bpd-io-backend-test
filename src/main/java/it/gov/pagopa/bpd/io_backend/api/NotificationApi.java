@@ -1,6 +1,7 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
 import io.swagger.annotations.Api;
+import it.gov.pagopa.bpd.io_backend.model.MessageResponse;
 import it.gov.pagopa.bpd.io_backend.model.NotificationMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,6 @@ import javax.validation.Valid;
 public interface NotificationApi {
 
     @RequestMapping(value = "c/progetto-io/messages", produces = {"application/json"}, method = RequestMethod.POST)
-    ResponseEntity<String> submitMessage(@Valid @RequestBody NotificationMessage notificationDTO);
+    ResponseEntity<MessageResponse> submitMessage(@Valid @RequestBody NotificationMessage notificationDTO);
 
 }

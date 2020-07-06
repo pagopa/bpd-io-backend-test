@@ -25,4 +25,5 @@ public class ContentPaymentData {
 
     @JsonProperty("invalid_after_due_date")
     private Boolean invalidAfterDueDate = false;
+
 }
