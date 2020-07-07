@@ -96,7 +96,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'pagopabpdiobackendtest.bpd-test'
+    environment: 'pagopabpdiobackendtest2.bpd-test'
     strategy:
       runOnce:
         deploy:
