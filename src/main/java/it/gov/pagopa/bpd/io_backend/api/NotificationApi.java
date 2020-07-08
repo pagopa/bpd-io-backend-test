@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 @Api(value = "notification")
 @Validated
+@RequestMapping(value = "/bpd/pagopa/api/v1")
 public interface NotificationApi {
 
     @RequestMapping(value = "c/progetto-io/messages", produces = {"application/json"}, method = RequestMethod.POST)

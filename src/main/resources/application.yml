@@ -13,5 +13,7 @@ logging:
     root: INFO
 
 bpd:
+  hash:
+    salt: ${BPD_HASH_SALT:abcde12345}
   jwt:
     key: ${BPD_JWT_KEY:}
