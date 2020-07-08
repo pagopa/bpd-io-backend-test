@@ -22,4 +22,5 @@ public class NotificationController implements NotificationApi {
         return new ResponseEntity<MessageResponse>(
                 MessageResponse.builder().id(UUID.randomUUID().toString()).build(), HttpStatus.OK);
     }
+
 }
