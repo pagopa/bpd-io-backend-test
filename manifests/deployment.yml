@@ -14,3 +14,6 @@ spec:
           image: cstarregistry.azurecr.io/cstariobackendtest
           ports:
           - containerPort: 8080
+          env:
+            - name: BPD_JWT_KEY
+              value: Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=
