@@ -17,11 +17,11 @@ import java.util.Collections;
 
 @Controller
 @Slf4j
-public class PaymentInstrumentController implements PaymentInstrumentApi{
+public class PMWalletsController implements PMWalletsApi {
 
     private final String salt;
 
-    public PaymentInstrumentController(@Value("${bpd.hash.salt}") String salt) {
+    public PMWalletsController(@Value("${bpd.hash.salt}") String salt) {
         this.salt = salt;
     }
 

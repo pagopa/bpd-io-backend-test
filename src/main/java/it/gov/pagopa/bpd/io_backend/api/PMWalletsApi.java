@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @RequestMapping(value = "/pp-restapi-rtd/v1")
-public interface PaymentInstrumentApi {
+public interface PMWalletsApi {
 
     @RequestMapping(value = "/wallets", produces = {"application/json"}, method = RequestMethod.GET)
     public ResponseEntity<WalletsResource> getHpan(@Valid @NotBlank @NotNull @RequestParam("pan") String pan);
