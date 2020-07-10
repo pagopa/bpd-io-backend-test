@@ -13,10 +13,10 @@ import javax.validation.Valid;
 
 @Api(value = "notification")
 @Validated
-@RequestMapping(value = "/bpd/pagopa/api/v1")
+@RequestMapping(value = "/c/progetto-io")
 public interface NotificationApi {
 
-    @RequestMapping(value = "c/progetto-io/messages", produces = {"application/json"}, method = RequestMethod.POST)
+    @RequestMapping(value = "messages", produces = {"application/json"}, method = RequestMethod.POST)
     ResponseEntity<MessageResponse> submitMessage(@Valid @RequestBody NotificationMessage notificationDTO);
 
 }
