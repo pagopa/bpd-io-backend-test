@@ -10,7 +10,7 @@ springfox:
 
 logging:
   level:
-    root: INFO
+    root: DEBUG
 
 bpd:
   hash:
