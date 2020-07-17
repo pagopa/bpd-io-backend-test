@@ -10,7 +10,8 @@ springfox:
 
 logging:
   level:
-    root: DEBUG
+    root: INFO
+    it.gov.pagopa.bpd: DEBUG
 
 bpd:
   hash:
