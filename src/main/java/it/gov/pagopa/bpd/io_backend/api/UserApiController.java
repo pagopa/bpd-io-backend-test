@@ -25,6 +25,10 @@ public class UserApiController implements UserApi {
 	@Override
 	public ResponseEntity<String> getToken(String version, String fiscalCode)
 			throws UnsupportedEncodingException {
+		if (log.isErrorEnabled()) {
+			log.debug("UserApiController.getToken");
+			log.debug("version = " + version + ", fiscalCode = " + fiscalCode);
+		}
 		return new ResponseEntity<String>(tokenService.buildToken(fiscalCode), HttpStatus.OK);
 	}
 
@@ -32,11 +36,18 @@ public class UserApiController implements UserApi {
 	public ResponseEntity<ExtendedPagoPAUser> getUser(
 			String version, String token)
 			throws UnsupportedEncodingException {
+		if (log.isErrorEnabled()) {
+			log.debug("UserApiController.getUser");
+			log.debug("version = " + version + ", token = " + token);
+		}
 		try {
 			ExtendedPagoPAUser pagoPAUser =
 					ExtendedPagoPAUser.builder()
 					.fiscalCode(tokenService.validateToken(token))
 							.build();
+			if (log.isErrorEnabled()) {
+				log.debug("result OK = " + pagoPAUser);
+			}
 			return new ResponseEntity<ExtendedPagoPAUser>(
 					pagoPAUser, HttpStatus.OK
 			);
