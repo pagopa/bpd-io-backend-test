@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-04-22T10:19:03.448Z")
@@ -29,7 +30,11 @@ public class UserApiController implements UserApi {
 			log.debug("UserApiController.getToken");
 			log.debug("version = " + version + ", fiscalCode = " + fiscalCode);
 		}
-		return new ResponseEntity<String>(tokenService.buildToken(fiscalCode), HttpStatus.OK);
+		@Valid final String token = tokenService.buildToken(fiscalCode);
+		if (log.isErrorEnabled()) {
+			log.debug("token = " + token);
+		}
+		return new ResponseEntity<String>(token, HttpStatus.OK);
 	}
 
 	@Override
