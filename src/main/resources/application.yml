@@ -14,6 +14,6 @@ logging:
 
 bpd:
   hash:
-    salt: ${BPD_HASH_SALT:abcde12345}
+    salt: ${BPD_HASH_SALT:SALT123}
   jwt:
     key: ${BPD_JWT_KEY:}
