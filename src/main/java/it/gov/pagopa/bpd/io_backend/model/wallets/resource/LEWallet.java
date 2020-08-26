@@ -1,4 +1,4 @@
-package it.gov.pagopa.bpd.io_backend.model;
+package it.gov.pagopa.bpd.io_backend.model.wallets.resource;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 
 @Data
 @Builder
-public class NPWallet {
+public class LEWallet {
 
     private String id;
     private String vatCode;

@@ -2,7 +2,7 @@ package it.gov.pagopa.bpd.io_backend.api;
 
 import io.swagger.annotations.Api;
 import it.gov.pagopa.bpd.io_backend.model.MessageResponse;
-import it.gov.pagopa.bpd.io_backend.model.NotificationMessage;
+import it.gov.pagopa.bpd.io_backend.model.notification.NotificationMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;

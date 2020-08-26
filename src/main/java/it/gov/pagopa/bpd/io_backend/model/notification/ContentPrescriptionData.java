@@ -1,4 +1,4 @@
-package it.gov.pagopa.bpd.io_backend.model;
+package it.gov.pagopa.bpd.io_backend.model.notification;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

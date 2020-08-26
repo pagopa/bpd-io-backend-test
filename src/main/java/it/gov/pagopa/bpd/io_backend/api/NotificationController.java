@@ -1,7 +1,7 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
 import it.gov.pagopa.bpd.io_backend.model.MessageResponse;
-import it.gov.pagopa.bpd.io_backend.model.NotificationMessage;
+import it.gov.pagopa.bpd.io_backend.model.notification.NotificationMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

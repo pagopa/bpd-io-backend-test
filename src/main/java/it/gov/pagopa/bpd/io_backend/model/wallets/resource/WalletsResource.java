@@ -1,4 +1,4 @@
-package it.gov.pagopa.bpd.io_backend.model;
+package it.gov.pagopa.bpd.io_backend.model.wallets.resource;
 
 import lombok.Builder;
 import lombok.Data;

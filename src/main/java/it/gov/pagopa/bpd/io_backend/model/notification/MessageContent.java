@@ -1,6 +1,8 @@
-package it.gov.pagopa.bpd.io_backend.model;
+package it.gov.pagopa.bpd.io_backend.model.notification;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.gov.pagopa.bpd.io_backend.model.notification.ContentPaymentData;
+import it.gov.pagopa.bpd.io_backend.model.notification.ContentPrescriptionData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

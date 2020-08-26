@@ -1,7 +1,7 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
 import io.swagger.annotations.*;
-import it.gov.pagopa.bpd.io_backend.model.ExtendedPagoPAUser;
+import it.gov.pagopa.bpd.io_backend.model.user.ExtendedPagoPAUser;
 import it.gov.pagopa.bpd.io_backend.model.ProblemJson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

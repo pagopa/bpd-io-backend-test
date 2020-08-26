@@ -2,7 +2,7 @@ package it.gov.pagopa.bpd.io_backend.api;
 
 import io.jsonwebtoken.ClaimJwtException;
 import it.gov.pagopa.bpd.io_backend.builder.TokenBuilder;
-import it.gov.pagopa.bpd.io_backend.model.ExtendedPagoPAUser;
+import it.gov.pagopa.bpd.io_backend.model.user.ExtendedPagoPAUser;
 import it.gov.pagopa.bpd.io_backend.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
