@@ -24,7 +24,6 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
-  imageRepository: 'cstariobackendtest'
   containerRegistry: 'cstarregistry.azurecr.io'
   dockerfileRelativePath: 'Dockerfile'
   tag: '$(Build.BuildId)'
@@ -34,8 +33,15 @@ variables:
   vmImageName: 'ubuntu-latest'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
-  #isToDeploy: $[ne(variables['Build.Reason'], 'PullRequest')]
-  
+
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
+    devOpsEnv: 'pagopabpdiobackendtest2.bpd-test'
+    deployment: deployment-sit
+    imageRepository: 'cstariobackendtest-sit'
+    ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
+      devOpsEnv: 'pagopabpdiobackendtest2.bpd-uat'
+      deployment: deployment-uat
+      imageRepository: 'cstariobackendtest-uat'
 
 stages:
 - stage: Build
@@ -91,7 +97,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'pagopabpdiobackendtest2.bpd-test'
+    environment: '$(devOpsEnv)'
     strategy:
       runOnce:
         deploy:
@@ -107,7 +113,7 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
+                $(Pipeline.Workspace)/manifests/$(deployment).yml
                 $(Pipeline.Workspace)/manifests/service.yml
               imagePullSecrets: |
                 $(imagePullSecret)
