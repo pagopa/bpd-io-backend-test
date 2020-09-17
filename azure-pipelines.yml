@@ -28,6 +28,7 @@ variables:
   dockerfileRelativePath: 'Dockerfile'
   #tag: '$(Build.BuildId)'
   tag: 'latest'
+  imageRepository: 'cstariobackendtest-sit'
   imagePullSecret: 'cstarregistry-auth'
 
   # Agent VM image name
