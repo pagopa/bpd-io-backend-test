@@ -26,8 +26,7 @@ variables:
   dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
   containerRegistry: 'cstarregistry.azurecr.io'
   dockerfileRelativePath: 'Dockerfile'
-  #tag: '$(Build.BuildId)'
-  tag: pippo
+  tag: '$(Build.BuildId)'
   imagePullSecret: 'cstarregistry-auth'
 
   # Agent VM image name
@@ -80,7 +79,7 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
         buildContext: '$(Build.Repository.LocalPath)'
-        tags: '$(tag)'
+        tags: 'pippo'
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Atrifact manifests'
       condition: and(succeeded(), eq(variables.isToDeploy, true))
