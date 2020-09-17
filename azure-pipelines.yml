@@ -27,7 +27,7 @@ variables:
   containerRegistry: 'cstarregistry.azurecr.io'
   dockerfileRelativePath: 'Dockerfile'
   #tag: '$(Build.BuildId)'
-  tag: 'pippo'
+  tag: pippo
   imagePullSecret: 'cstarregistry-auth'
 
   # Agent VM image name
