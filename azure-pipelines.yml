@@ -26,7 +26,8 @@ variables:
   dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
   containerRegistry: 'cstarregistry.azurecr.io'
   dockerfileRelativePath: 'Dockerfile'
-  tag: '$(Build.BuildId)'
+  #tag: '$(Build.BuildId)'
+  tag: 'latest'
   imagePullSecret: 'cstarregistry-auth'
 
   # Agent VM image name
