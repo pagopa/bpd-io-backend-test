@@ -96,7 +96,9 @@ stages:
   - deployment: Deploy
     displayName: Deploy
     pool:
-      vmImage: 'uat_agent_pool'
+      name: uat_agent_pool
+      demands:
+      - agent.name -equals ddsrpst01 
     environment: 'uat-test'
     strategy:
       runOnce:
