@@ -107,11 +107,7 @@ stages:
           - download: none
           - task: DownloadPipelineArtifact@2
             inputs:
-              buildType: 'specific'
-              project: '365c4b5c-1f31-4eac-965c-cfeb415db2fd'
-              definition: '4'
-              buildVersionToDownload: 'specific'
-              pipelineId: '691'
+              buildType: 'current'
               artifactName: 'manifests'
               targetPath: '$(Pipeline.Workspace)/manifests'
           - task: KubernetesManifest@0
