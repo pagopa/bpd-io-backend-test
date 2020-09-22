@@ -90,7 +90,7 @@ stages:
 
 - stage: Deploy
   displayName: Deploy stage
-  dependsOn: Build
+#  dependsOn: Build
   condition: and(succeeded(), eq(variables.isToDeploy, true))
   jobs:
   - deployment: Deploy
