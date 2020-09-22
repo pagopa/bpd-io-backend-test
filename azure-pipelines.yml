@@ -96,7 +96,7 @@ stages:
   - deployment: Deploy
     displayName: Deploy
     pool:
-      vmImage: $(vmImageName)
+      vmImage: 'uat_agent_pool'
     environment: '$(devOpsEnv)'
     strategy:
       runOnce:
