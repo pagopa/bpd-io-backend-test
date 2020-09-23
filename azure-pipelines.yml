@@ -38,7 +38,7 @@ variables:
     devOpsEnv: 'pagopabpdiobackendtest2.bpd-test'
     deployment: deployment-sit
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
-    dockerRegistryServiceConnection: '0fd12f57-6169-4916-827b-8cc502e9340a'
+    dockerRegistryServiceConnection: 'cstaruatregistry-connection'
     containerRegistry: 'cstaruatregistry.azurecr.io'
     imagePullSecret: 'cstaruatregistry-auth'
     devOpsEnv: 'pagopabpdiobackendtest2.bpd-uat'
