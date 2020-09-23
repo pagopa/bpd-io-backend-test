@@ -22,12 +22,9 @@ resources:
 
 variables:
 
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
-  containerRegistry: 'cstarregistry.azurecr.io'
   dockerfileRelativePath: 'Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'cstarregistry-auth'
+  imageRepository: 'cstariobackendtest'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -35,13 +32,17 @@ variables:
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
 
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
+    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
+    containerRegistry: 'cstarregistry.azurecr.io'
+    imagePullSecret: 'cstarregistry-auth'
     devOpsEnv: 'pagopabpdiobackendtest2.bpd-test'
     deployment: deployment-sit
-    imageRepository: 'cstariobackendtest-sit'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
+    dockerRegistryServiceConnection: '0fd12f57-6169-4916-827b-8cc502e9340a'
+    containerRegistry: 'cstaruatregistry.azurecr.io'
+    imagePullSecret: 'cstaruatregistry-auth'
     devOpsEnv: 'pagopabpdiobackendtest2.bpd-uat'
     deployment: deployment-uat
-    imageRepository: 'cstariobackendtest-uat'
 
 stages:
 - stage: Build
