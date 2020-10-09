@@ -11,7 +11,7 @@ springfox:
 logging:
   level:
     root: INFO
-    it.gov.pagopa.bpd: DEBUG
+    it.gov.pagopa.bpd: ${BACKEND_IO_LOG_LEVEL:DEBUG}
 
 bpd:
   hash:

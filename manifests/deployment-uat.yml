@@ -20,3 +20,5 @@ spec:
           env:
             - name: BPD_JWT_KEY
               value: Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=
+            - name: BACKEND_IO_LOG_LEVEL
+              value: INFO
