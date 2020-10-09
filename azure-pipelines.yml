@@ -22,14 +22,9 @@ resources:
 
 variables:
 
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
-  containerRegistry: 'cstarregistry.azurecr.io'
   dockerfileRelativePath: 'Dockerfile'
-  #tag: '$(Build.BuildId)'
-  tag: 'latest'
-  imageRepository: 'cstariobackendtest-sit'
-  imagePullSecret: 'cstarregistry-auth'
+  tag: '$(Build.BuildId)'
+  imageRepository: 'cstariobackendtest'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -37,13 +32,17 @@ variables:
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
 
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
+    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
+    containerRegistry: 'cstarregistry.azurecr.io'
+    imagePullSecret: 'cstarregistry-auth'
     devOpsEnv: 'pagopabpdiobackendtest2.bpd-test'
     deployment: deployment-sit
-    imageRepository: 'cstariobackendtest-sit'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
+    dockerRegistryServiceConnection: 'cstaruatregistry-connection'
+    containerRegistry: 'cstaruatregistry.azurecr.io'
+    imagePullSecret: 'cstaruatregistry-auth'
     devOpsEnv: 'pagopabpdiobackendtest2.bpd-uat'
     deployment: deployment-uat
-    imageRepository: 'cstariobackendtest-uat'
 
 stages:
 - stage: Build
@@ -74,7 +73,7 @@ stages:
         sonarQubeRunAnalysis: false
     - task: Docker@2
       displayName: Build and push an image to container registry
-      #condition: and(succeeded(), eq(variables.isToDeploy, true))
+      condition: and(succeeded(), eq(variables.isToDeploy, true))
       inputs:
         containerRegistry: '$(dockerRegistryServiceConnection)'
         repository: '$(imageRepository)'
@@ -98,8 +97,10 @@ stages:
   - deployment: Deploy
     displayName: Deploy
     pool:
-      vmImage: $(vmImageName)
-    environment: '$(devOpsEnv)'
+      name: uat_agent_pool
+      demands:
+      - agent.name -equals ddsrpst01 
+    environment: 'uat-test'
     strategy:
       runOnce:
         deploy:
@@ -113,12 +114,12 @@ stages:
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
-              action: deploy
+              action: 'deploy'
+              kubernetesServiceConnection: 'ddsakstest-self-connection-bpd-uat'
+              namespace: 'bpd-uat'
               manifests: |
                 $(Pipeline.Workspace)/manifests/$(deployment).yml
                 $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+              containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+              imagePullSecrets: '$(imagePullSecret)'
 
