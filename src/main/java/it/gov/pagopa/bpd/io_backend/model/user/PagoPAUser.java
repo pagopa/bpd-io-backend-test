@@ -1,4 +1,4 @@
-package it.gov.pagopa.bpd.io_backend.model;
+package it.gov.pagopa.bpd.io_backend.model.user;
 
 import java.util.Objects;
 

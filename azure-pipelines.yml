@@ -5,32 +5,44 @@
 trigger:
   branches:
     include:
-    - master
-    - develop
-    - features/*
+      - master
+      - develop
+      - release/*
+      - features/*
   paths:
     include:
-    - src/*
-    - pom.xml
+      - api/*
+      - app/*
+      - core/*
+      - integration/*
+      - pom.xml
 
 resources:
 - repo: self
 
 variables:
 
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '71c99547-4327-4384-ba3c-34f197a2c919'
-  imageRepository: 'cstarregistryazurecriobpddevbpdiobackendtest'
-  containerRegistry: 'cstarregistry.azurecr.io'
-  dockerfilePath: 'Dockerfile'
+  dockerfileRelativePath: 'Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'cstarregistry5508-auth'
+  imageRepository: 'cstariobackendtest'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-  
-  # Name of the new namespace being created to deploy the PR changes.
-  k8sNamespaceForPR: '$(system.pullRequest.sourceBranch)'
+
+  isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
+
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
+    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
+    containerRegistry: 'cstarregistry.azurecr.io'
+    imagePullSecret: 'cstarregistry-auth'
+    devOpsEnv: 'pagopabpdiobackendtest2.bpd-test'
+    deployment: deployment-sit
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
+    dockerRegistryServiceConnection: 'cstaruatregistry-connection'
+    containerRegistry: 'cstaruatregistry.azurecr.io'
+    imagePullSecret: 'cstaruatregistry-auth'
+    devOpsEnv: 'pagopabpdiobackendtest2.bpd-uat'
+    deployment: deployment-uat
 
 stages:
 - stage: Build
@@ -41,111 +53,73 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - task: DownloadSecureFile@1
+      displayName: 'download settings.xml for Maven'
+      name: settingsxml
+      inputs:
+        secureFile: 'settings.xml'
+        retryCount: '2'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'package'
+        options: '-B -s $(settingsxml.secureFilePath)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        mavenVersionOption: 'Default'
+        mavenOptions: '-Xmx3072m'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: true
+        sonarQubeRunAnalysis: false
     - task: Docker@2
       displayName: Build and push an image to container registry
+      condition: and(succeeded(), eq(variables.isToDeploy, true))
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          
-    - upload: manifests
-      artifact: manifests
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: '$(imageRepository)'
+        command: 'buildAndPush'
+        Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
+        buildContext: '$(Build.Repository.LocalPath)'
+        tags: '$(tag)'
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Atrifact manifests'
+      condition: and(succeeded(), eq(variables.isToDeploy, true))
+      inputs:
+        targetPath: '$(Build.Repository.LocalPath)/manifests'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
 
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
+  condition: and(succeeded(), eq(variables.isToDeploy, true))
   jobs:
   - deployment: Deploy
-    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
     displayName: Deploy
     pool:
-      vmImage: $(vmImageName)
-    environment: 'pagopabpdiobackendtest.bdp-dev'
+      name: uat_agent_pool
+      demands:
+      - agent.name -equals ddsrpst01 
+    environment: 'uat-test'
     strategy:
       runOnce:
         deploy:
           steps:
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
+          - download: none
+          - task: DownloadPipelineArtifact@2
             inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-              
+              buildType: 'current'
+              artifactName: 'manifests'
+              targetPath: '$(Pipeline.Workspace)/manifests'
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
-              action: deploy
+              action: 'deploy'
+              kubernetesServiceConnection: 'ddsakstest-self-connection-bpd-uat'
+              namespace: 'bpd-uat'
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
+                $(Pipeline.Workspace)/manifests/$(deployment).yml
                 $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+              containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+              imagePullSecrets: '$(imagePullSecret)'
 
-  - deployment: DeployPullRequest
-    displayName: Deploy Pull request
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
-    pool:
-      vmImage: $(vmImageName)
-      
-    environment: 'pagopabpdiobackendtest.$(k8sNamespaceForPR)'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - reviewApp: bdp-dev
-
-          - task: Kubernetes@1
-            displayName: 'Create a new namespace for the pull request'
-            inputs:
-              command: apply
-              useConfigurationFile: true
-              inline: '{ "kind": "Namespace", "apiVersion": "v1", "metadata": { "name": "$(k8sNamespaceForPR)" }}'
-
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
-            inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              namespace: $(k8sNamespaceForPR)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-          
-          - task: KubernetesManifest@0
-            displayName: Deploy to the new namespace in the Kubernetes cluster
-            inputs:
-              action: deploy
-              namespace: $(k8sNamespaceForPR)
-              manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
-          
-          - task: Kubernetes@1
-            name: get
-            displayName: 'Get services in the new namespace'
-            continueOnError: true
-            inputs:
-              command: get
-              namespace: $(k8sNamespaceForPR)
-              arguments: svc
-              outputFormat: jsonpath='http://{.items[0].status.loadBalancer.ingress[0].ip}:{.items[0].spec.ports[0].port}'
-              
-          # Getting the IP of the deployed service and writing it to a variable for posing comment
-          - script: |
-              url="$(get.KubectlOutput)"
-              message="Your review app has been deployed"
-              if [ ! -z "$url" -a "$url" != "http://:" ] 
-              then
-                message="${message} and is available at $url.<br><br>[Learn More](https://aka.ms/testwithreviewapps) about how to test and provide feedback for the app."
-              fi
-              echo "##vso[task.setvariable variable=GITHUB_COMMENT]$message"

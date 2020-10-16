@@ -1,3 +1,20 @@
-springfox.documentation.swagger.v2.path=/api-docs
-server.contextPath=/pagopa/api/v1
-server.port=8080
+server:
+  port: 8080
+  contextPath: /
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+
+logging:
+  level:
+    root: INFO
+    it.gov.pagopa.bpd: ${BACKEND_IO_LOG_LEVEL:DEBUG}
+
+bpd:
+  hash:
+    salt: ${BPD_HASH_SALT:SALT123}
+  jwt:
+    key: ${BPD_JWT_KEY:}
