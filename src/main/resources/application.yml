@@ -1,6 +1,12 @@
 server:
   port: 8080
   contextPath: /
+  tomcat:
+    connection-timeout: ${BACKEND_IO_SERVER_CONNECTION_TIMEOUT:${SERVER_CONNECTION_TIMEOUT:}}
+    max-connections: ${BACKEND_IO_SERVER_MAX_CONNECTION:${SERVER_MAX_CONNECTION:8192}}
+    processor-cache: ${BACKEND_IO_SERVER_PROCESSOR_CACHE:${SERVER_PROCESSOR_CACHE:200}}
+    threads.max: ${BACKEND_IO_SERVER_THREAD_MAX:${SERVER_THREAD_MAX:200}}
+    threads.min-spare: ${BACKEND_IO_SERVER_THREAD_MIN:${SERVER_THREAD_MIN:10}}
 
 springfox:
   documentation:
