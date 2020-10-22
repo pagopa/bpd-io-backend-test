@@ -17,3 +17,7 @@ spec:
           env:
             - name: BPD_JWT_KEY
               value: Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=
+          envFrom:
+            - configMapRef:
+                name: cstariobackendtest
+                optional: true
