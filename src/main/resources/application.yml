@@ -8,6 +8,7 @@ server:
     threads.max: ${BACKEND_IO_SERVER_THREAD_MAX:${SERVER_THREAD_MAX:200}}
     threads.min-spare: ${BACKEND_IO_SERVER_THREAD_MIN:${SERVER_THREAD_MIN:10}}
     accesslog.enabled: ${BACKEND_IO_SERVER_ACCESSLOG_ENABLED:${SERVER_ACCESSLOG_ENABLED:false}}
+    accesslog.pattern: ${BACKEND_IO_SERVER_ACCESSLOG_PATTERN:${SERVER_ACCESSLOG_PATTERN:common}}
 
 springfox:
   documentation:
