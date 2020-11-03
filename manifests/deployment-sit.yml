@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: cstariobackendtest 
-          image: cstarregistry.azurecr.io/cstariobackendtest-sit
+          image: cstarregistry.azurecr.io/cstariobackendtest
           ports:
           - containerPort: 8080
           env:
