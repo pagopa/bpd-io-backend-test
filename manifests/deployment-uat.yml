@@ -13,7 +13,11 @@ spec:
         app: cstariobackendtest
     spec:
       containers:
-        - name: cstariobackendtest
+        - resources:
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+          name: cstariobackendtest
           image: cstaruatregistry.azurecr.io/cstariobackendtest
           ports:
             - containerPort: 8080
