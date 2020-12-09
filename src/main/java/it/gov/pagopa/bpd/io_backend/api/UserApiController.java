@@ -59,11 +59,7 @@ public class UserApiController implements UserApi {
             log.debug("UserApiController.getUser");
             log.debug("version = " + version + ", token = " + token);
         }
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         OffsetDateTime execStart = null;
         if (log.isInfoEnabled()) {
             execStart = OffsetDateTime.now();
