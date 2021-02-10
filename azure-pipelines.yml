@@ -118,13 +118,12 @@ stages:
               artifact: 'manifests'
               publishLocation: 'pipeline'
 
-  - stage: Deploy
-    displayName: Deploy stage
+  - stage: Deploy_SIT
+    displayName: Deploy SIT stage
     dependsOn: Build
     variables:
       pomversion: $[ stageDependencies.Build.Build.outputs['getpomversion.outputpomversion'] ]
-    condition: and(succeeded(), eq(variables.isToDeploy, true))
-
+    condition: and(succeeded(), eq(variables.isToDeploy, true), eq(variables.isSIT, true))
     jobs:
       - deployment: Deploy1
         displayName: Deploy SIT
@@ -144,7 +143,7 @@ stages:
                     targetType: 'inline'
                     script: |
                       echo $POMVERSION
-                    failOnStderr: true                  
+                    failOnStderr: true
                 - task: DownloadPipelineArtifact@2
                   inputs:
                     buildType: 'current'
@@ -162,6 +161,13 @@ stages:
                     containers: |
                       $(containerRegistry)/$(imageRepository):$(Build.BuildId)
 
+  - stage: Deploy_UAT
+    displayName: Deploy UAT stage
+    dependsOn: Build
+    variables:
+      pomversion: $[ stageDependencies.Build.Build.outputs['getpomversion.outputpomversion'] ]
+    condition: and(succeeded(), eq(variables.isToDeploy, true), eq(variables.isUAT, true))
+    jobs:
       - deployment: Deploy2
         displayName: Deploy UAT
         condition: eq(variables.isUAT, true)
@@ -180,7 +186,7 @@ stages:
                   targetType: 'inline'
                   script: |
                     echo $POMVERSION
-                  failOnStderr: true                
+                  failOnStderr: true
               - task: DownloadPipelineArtifact@2
                 inputs:
                   buildType: 'current'
@@ -197,6 +203,14 @@ stages:
                     $(Pipeline.Workspace)/manifests/service.yml
                   containers: '$(containerRegistry)/$(imageRepository):$(Build.BuildId)'
                   imagePullSecrets: '$(imagePullSecret)'
+
+  - stage: Deploy_PROD
+    displayName: Deploy PROD stage
+    dependsOn: Build
+    variables:
+      pomversion: $[ stageDependencies.Build.Build.outputs['getpomversion.outputpomversion'] ]
+    condition: and(succeeded(), eq(variables.isToDeploy, true), eq(variables.isPROD, true))
+    jobs:
       - deployment: Deploy3
         displayName: Deploy PROD
         condition: eq(variables.isPROD, true)
