@@ -24,3 +24,5 @@ spec:
             - configMapRef:
                 name: cstariobackendtest
                 optional: true
+            - secretRef:
+                name: application-insights
