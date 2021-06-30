@@ -15,6 +15,7 @@ spec:
       containers:
         - name: cstariobackendtest
           image: cstardacr.azurecr.io/cstariobackendtest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
