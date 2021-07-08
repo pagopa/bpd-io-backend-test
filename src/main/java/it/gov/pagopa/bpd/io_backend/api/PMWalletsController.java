@@ -40,7 +40,7 @@ public class PMWalletsController implements PMWalletsApi {
         String hpan = DigestUtils.sha256Hex(walletNPInput.getPan()+salt);
         return new ResponseEntity<>(
                 NPWallet.builder().hashPan(hpan).build(),
-                HttpStatus.OK);    
+                HttpStatus.CREATED);
     }
 
 
