@@ -1,8 +1,6 @@
 package it.gov.pagopa.bpd.io_backend.model.wallets.dto.pagopa;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.Valid;
@@ -62,6 +60,7 @@ public class WalletNPInputV2 {
   private WalletTypeEnum walletType;
 
   @JsonProperty("info")
+  @WalletInfoConfig
   private WalletInfo info;
 
   public WalletNPInputV2 taxCode(String taxCode) {

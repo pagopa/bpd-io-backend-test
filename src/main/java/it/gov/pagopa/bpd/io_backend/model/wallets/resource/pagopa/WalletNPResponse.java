@@ -63,6 +63,7 @@ public class WalletNPResponse   {
   @JsonProperty("walletType")
   private WalletTypeEnum walletType;
 
+
   @JsonProperty("info")
   private WalletInfo info;
 

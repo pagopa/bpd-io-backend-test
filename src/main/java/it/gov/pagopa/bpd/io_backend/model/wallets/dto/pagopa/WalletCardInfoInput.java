@@ -64,7 +64,7 @@ public class WalletCardInfoInput implements WalletInfo   {
     @JsonCreator
     public static BrandEnum fromValue(String value) {
       for (BrandEnum b : BrandEnum.values()) {
-        if (b.value.equals(value)) {
+        if (b.value.equalsIgnoreCase(value)) {
           return b;
         }
       }
