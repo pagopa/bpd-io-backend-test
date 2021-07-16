@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: cstariobackendtest
-          image: cstaruatregistry.azurecr.io/cstariobackendtest
+          image: cstaruacr.azurecr.io/cstariobackendtest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
@@ -24,3 +25,5 @@ spec:
             - configMapRef:
                 name: cstariobackendtest
                 optional: true
+            - secretRef:
+                name: application-insights
