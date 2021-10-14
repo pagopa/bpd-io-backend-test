@@ -1,7 +1,9 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
 import it.gov.pagopa.bpd.io_backend.model.MessageResponse;
+import it.gov.pagopa.bpd.io_backend.model.ProfileResponse;
 import it.gov.pagopa.bpd.io_backend.model.notification.NotificationMessage;
+import it.gov.pagopa.bpd.io_backend.model.notification.ProfileDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,4 +25,9 @@ public class NotificationController implements NotificationApi {
                 MessageResponse.builder().id(UUID.randomUUID().toString()).build(), HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<ProfileResponse> profiles(@Valid ProfileDTO profileDTO) {
+        return new ResponseEntity<ProfileResponse>(
+                ProfileResponse.builder().email("email@example.com").version("v1").build(), HttpStatus.OK);
+    }
 }
