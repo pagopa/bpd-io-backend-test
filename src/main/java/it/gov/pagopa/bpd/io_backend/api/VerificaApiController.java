@@ -1,12 +1,8 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.Random;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
+import eu.sia.meda.core.controller.StatelessController;
+import it.gov.pagopa.bpd.io_backend.model.ade.VerificaPartitaIva;
+import it.gov.pagopa.bpd.io_backend.model.ade.VerificaPartitaIva.StatoEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +11,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.collect.Sets;
-
-import it.gov.pagopa.bpd.io_backend.model.ade.VerificaPartitaIva;
-import it.gov.pagopa.bpd.io_backend.model.ade.VerificaPartitaIva.StatoEnum;
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-28T07:23:25.920Z[GMT]")
 @RestController
-public class VerificaApiController implements VerificaApi {
+public class VerificaApiController extends StatelessController implements VerificaApi {
 
 	private static final Logger log = LoggerFactory.getLogger(VerificaApiController.class);
 
 	private final HttpServletRequest request;
-	private final static Set<String> partiteIvaNonValide = 
-			Sets.newHashSet( "01248163264", "02468101214", "13579111317", "51015202530",
-					"04200420042", "36912151821", "61218243036", "71421283542");
+	private final static Set<String> partiteIvaNonValide = new HashSet<>();
+	static{
+		partiteIvaNonValide.add("01248163264");
+		partiteIvaNonValide.add("02468101214");
+		partiteIvaNonValide.add("13579111317");
+		partiteIvaNonValide.add("51015202530");
+		partiteIvaNonValide.add("04200420042");
+		partiteIvaNonValide.add("36912151821");
+		partiteIvaNonValide.add("61218243036");
+		partiteIvaNonValide.add("71421283542");
+	}
 	private final Random random;
 
 	@Autowired

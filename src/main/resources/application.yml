@@ -26,3 +26,7 @@ bpd:
     salt: ${BPD_HASH_SALT:SALT123}
   jwt:
     key: ${BPD_JWT_KEY:}
+
+spring:
+  application:
+    name: "bpd-backend-test-app"

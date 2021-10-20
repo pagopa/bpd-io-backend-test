@@ -1,5 +1,6 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
+import eu.sia.meda.core.controller.StatelessController;
 import io.jsonwebtoken.ClaimJwtException;
 import it.gov.pagopa.bpd.io_backend.builder.TokenBuilder;
 import it.gov.pagopa.bpd.io_backend.model.user.ExtendedPagoPAUser;
@@ -19,7 +20,7 @@ import java.time.temporal.ChronoUnit;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class UserApiController implements UserApi {
+public class UserApiController extends StatelessController implements UserApi {
 
     TokenBuilder builder = TokenBuilder.getIstance();
 

@@ -1,5 +1,6 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
+import eu.sia.meda.core.controller.StatelessController;
 import it.gov.pagopa.bpd.io_backend.model.MessageResponse;
 import it.gov.pagopa.bpd.io_backend.model.ProfileResponse;
 import it.gov.pagopa.bpd.io_backend.model.notification.NotificationMessage;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class NotificationController implements NotificationApi {
+public class NotificationController extends StatelessController implements NotificationApi {
 
     @Override
     public ResponseEntity<MessageResponse> submitMessage(@Valid NotificationMessage notificationDTO) {

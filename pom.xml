@@ -3,12 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.6.RELEASE</version>
-    <relativePath /> <!-- lookup parent from repository -->
-  </parent>
+	<parent>
+		<groupId>it.gov.pagopa.bpd.ms</groupId>
+		<version>2.0.1</version>
+		<artifactId>bpd-ms-starter-parent</artifactId>
+	</parent>
 
 	<groupId>it.gov.pagopa</groupId>
 	<artifactId>bpd-backend-io-auth</artifactId>
@@ -20,7 +19,7 @@
 		<java.version>1.8</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<springfox-version>2.7.0</springfox-version>
+		<springfox-version>3.0.0</springfox-version>
 	</properties>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -106,5 +105,40 @@
 		    <artifactId>jakarta.xml.bind-api</artifactId>
 		    <version>2.3.3</version>
 		</dependency>
+		<dependency>
+			<groupId>eu.sia.meda</groupId>
+			<artifactId>meda-arch-event</artifactId>
+			<version>2.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.plugin</groupId>-->
+<!--			<artifactId>spring-plugin-core</artifactId>-->
+<!--			<version>1.2.0.RELEASE</version>-->
+<!--		</dependency>-->
 	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>cstar</id>
+			<url>https://pkgs.dev.azure.com/pagopaspa/cstar-projects/_packaging/cstar/maven/v1</url>
+		</repository>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>cstar</id>
+			<url>https://pkgs.dev.azure.com/pagopaspa/cstar-projects/_packaging/cstar/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<scm>
+		<developerConnection>scm:git:https://github.com/pagopa/bpd-io-backend-test.git</developerConnection>
+		<tag>0.0.1</tag>
+	</scm>
 </project>

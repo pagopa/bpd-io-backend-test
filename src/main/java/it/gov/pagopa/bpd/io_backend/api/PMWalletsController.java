@@ -1,5 +1,6 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
+import eu.sia.meda.core.controller.StatelessController;
 import it.gov.pagopa.bpd.io_backend.model.wallets.dto.WalletNPInput;
 import it.gov.pagopa.bpd.io_backend.model.wallets.resource.NPWallet;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Controller
 @Slf4j
-public class PMWalletsController implements PMWalletsApi {
+public class PMWalletsController extends StatelessController implements PMWalletsApi {
 
     private final String salt;
 
