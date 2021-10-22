@@ -27,3 +27,5 @@ spec:
                 optional: true
             - secretRef:
                 name: application-insights
+            - secretRef:
+                name: cstariobackendtest
