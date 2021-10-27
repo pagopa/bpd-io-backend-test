@@ -5,13 +5,16 @@ import eu.sia.meda.event.transformer.SimpleEventRequestTransformer;
 import eu.sia.meda.event.transformer.SimpleEventResponseTransformer;
 import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
 import it.gov.pagopa.bpd.io_backend.event.publisher.CsvTransactionPublisherConnector;
+import it.gov.pagopa.bpd.io_backend.model.provider.ProviderRequestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-28T07:23:25.920Z[GMT]")
@@ -43,7 +46,7 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 			topicElement = getMockTransactionResponse();
 		}else{
 			topicElement = new Transaction();
-			BeanUtils.copyProperties(transaction,topicElement);
+			BeanUtils.copyProperties(transaction, topicElement);
 		}
 		transactionPublisherConnector.doCall(topicElement, simpleEventRequestTransformer, simpleEventResponseTransformer);
 	}
@@ -51,6 +54,11 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	@Override
 	public void cashRegisterSender() {
 
+	}
+
+	@Override
+	public HttpStatus sendTransactionDetails(@Valid ProviderRequestDto request) {
+		return HttpStatus.OK;
 	}
 
 	private Transaction getMockTransactionResponse() {
