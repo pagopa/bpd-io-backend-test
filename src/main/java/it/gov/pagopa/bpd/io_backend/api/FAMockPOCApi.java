@@ -23,7 +23,7 @@ public interface FAMockPOCApi {
     @PostMapping(value = "/cash/register/pos/transaction/sender")
     void cashRegisterSender();
 
-    @PostMapping(value = "/fa/invoice/request", produces = {"application/json", "application/problem+json"})
+    @PostMapping(value = "/provider/invoice/request", produces = {"application/json", "application/problem+json"})
     @ResponseStatus(HttpStatus.OK)
     HttpStatus sendTransactionDetails(@RequestBody @Valid ProviderRequestDto request);
 
