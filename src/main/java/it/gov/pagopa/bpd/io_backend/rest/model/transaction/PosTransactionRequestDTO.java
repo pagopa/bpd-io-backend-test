@@ -19,10 +19,10 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class PosTransactionRequestDTO {
 
-    @ApiModelProperty(value = "${swagger.transactionRequest.merchantId}", required = true)
+    @ApiModelProperty(value = "${swagger.transactionRequest.authCode}", required = true)
     @JsonProperty(required = true)
     @NotNull
-    Long merchantId;
+    String authCode;
     @ApiModelProperty(value = "${swagger.transactionRequest.amount}", required = true)
     @JsonProperty(required = true)
     @NotNull
@@ -46,15 +46,6 @@ public class PosTransactionRequestDTO {
     @ApiModelProperty(value = "${swagger.transactionRequest.terminalId}", required = true)
     @JsonProperty(required = true)
     @NotNull
-    Long terminalId;
-    @ApiModelProperty(value = "${swagger.transactionRequest.customerParamDesc}", required = true)
-    @JsonProperty(required = true)
-    @NotNull
-    private CustomerParamDesc customerParamDesc;
-
-    public enum CustomerParamDesc {
-        FISCAL_CODE,
-        VAT_NUMBER
-    }
+    String terminalId;
 
 }

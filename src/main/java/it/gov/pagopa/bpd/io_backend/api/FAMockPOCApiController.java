@@ -74,7 +74,7 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 				.concat(request.getBinCard())
 				.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME));
 
-		transactionRestClient.createPosTransaction(transactionId,request);
+		transactionRestClient.createPosTransaction(request);
 	}
 
 	private Transaction getMockTransactionResponse() {
@@ -101,12 +101,11 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		return new PosTransactionRequestDTO().builder()
 				.trxDate(OffsetDateTime.parse("2020-04-09T16:22:45.304Z", DateTimeFormatter.ISO_DATE_TIME))
 				.amount(new BigDecimal("1313.13"))
-				.terminalId(0L)
+				.terminalId("0")
 				.binCard("1234")
-				.merchantId(5487L)
 				.vatNumber("12345678977")
 				.acquirerId(12385L)
-				.customerParamDesc(PosTransactionRequestDTO.CustomerParamDesc.FISCAL_CODE)
+				.authCode("12345685")
 				.build();
 	}
 	
