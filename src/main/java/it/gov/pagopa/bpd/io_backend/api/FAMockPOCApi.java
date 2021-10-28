@@ -7,6 +7,7 @@ import it.gov.pagopa.bpd.io_backend.model.provider.ProviderRequestDto;
 import it.gov.pagopa.bpd.io_backend.util.Constants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import it.gov.pagopa.bpd.io_backend.event.model.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.UnsupportedEncodingException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Api(value = "pocmock")
 @RequestMapping("/fa/mock/poc")
@@ -24,7 +29,8 @@ public interface FAMockPOCApi {
     void sendRTDTransaction(@RequestBody(required = false) Transaction transaction);
 
     @PostMapping(value = "/cash/register/pos/transaction/sender")
-    void cashRegisterSender();
+    void cashRegisterSender(@RequestBody(required = false) RegisterTransaction transaction,
+                            @RequestParam(required = false, value = "posType") String posType);
 
     @GetMapping(value = "/ade/users/{fiscalCode}")
     ResponseEntity<MockPerson> datiAnagraficiPersonaFisica(
