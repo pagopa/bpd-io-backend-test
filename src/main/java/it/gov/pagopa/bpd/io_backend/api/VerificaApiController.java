@@ -46,7 +46,8 @@ public class VerificaApiController extends StatelessController implements Verifi
 
 	public ResponseEntity<VerificaPartitaIva> getPartitaIva(@PathVariable("partitaIva") final String partitaIva) {
 		final String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json") && partitaIva.matches("[0-9]+")) {
+		if (//accept != null && accept.contains("application/json") &&
+				partitaIva.matches("[0-9]+")) {
 			log.debug("Building VerificaPartitaIva response for partita iva {}", partitaIva);
 			return ResponseEntity.ok(getVerificaPartitaIvaResponse(partitaIva));
 		} else {
