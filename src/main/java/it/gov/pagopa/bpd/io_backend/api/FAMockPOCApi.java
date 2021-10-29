@@ -1,6 +1,7 @@
 package it.gov.pagopa.bpd.io_backend.api;
 
 import io.swagger.annotations.Api;
+import it.gov.pagopa.bpd.io_backend.event.model.RegisterTransaction;
 import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
 import it.gov.pagopa.bpd.io_backend.model.provider.ProviderRequestDto;
@@ -24,7 +25,8 @@ public interface FAMockPOCApi {
     void sendRTDTransaction(@RequestBody(required = false) Transaction transaction);
 
     @PostMapping(value = "/cash/register/pos/transaction/sender")
-    void cashRegisterSender();
+    void cashRegisterSender(@RequestBody(required = false) RegisterTransaction transaction,
+                            @RequestParam(required = false, value = "posType") String posType);
 
     @GetMapping(value = "/ade/users/{fiscalCode}")
     ResponseEntity<MockPerson> datiAnagraficiPersonaFisica(
