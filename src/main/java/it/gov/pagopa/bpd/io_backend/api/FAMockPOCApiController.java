@@ -7,14 +7,17 @@ import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
 import it.gov.pagopa.bpd.io_backend.event.publisher.CsvTransactionPublisherConnector;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockAddress;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
+import it.gov.pagopa.bpd.io_backend.model.provider.ProviderRequestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -50,9 +53,9 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		Transaction topicElement = null;
 		if (transaction==null) {
 			topicElement = getMockTransactionResponse();
-		}else{
+		}else {
 			topicElement = new Transaction();
-			BeanUtils.copyProperties(transaction,topicElement);
+			BeanUtils.copyProperties(transaction, topicElement);
 		}
 		transactionPublisherConnector.doCall(topicElement, simpleEventRequestTransformer, simpleEventResponseTransformer);
 	}
@@ -63,10 +66,15 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	}
 
 	@Override
+	public HttpStatus sendTransactionDetails(@Valid ProviderRequestDto request) {
+		return HttpStatus.OK;
+	}
+
+	@Override
 	public ResponseEntity<MockPerson> datiAnagraficiPersonaFisica(final String fiscalCode) throws UnsupportedEncodingException {
 		log.debug("Retrieve mock data for person with fiscal code {}", fiscalCode);
 
-		if(notFoundFiscalCodes.contains(fiscalCode)) return ResponseEntity.noContent().build();
+		if (notFoundFiscalCodes.contains(fiscalCode)) return ResponseEntity.noContent().build();
 
 		final MockPerson person = MockPerson.builder()
 				.name("John")

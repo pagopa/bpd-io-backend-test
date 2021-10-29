@@ -2,7 +2,6 @@ package it.gov.pagopa.bpd.io_backend.api;
 
 import it.gov.pagopa.bpd.io_backend.model.wallets.dto.WalletNPInput;
 import it.gov.pagopa.bpd.io_backend.model.wallets.resource.NPWallet;
-import it.gov.pagopa.bpd.io_backend.model.wallets.resource.WalletsResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
