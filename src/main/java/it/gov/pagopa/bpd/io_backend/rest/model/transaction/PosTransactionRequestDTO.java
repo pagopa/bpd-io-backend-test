@@ -47,5 +47,9 @@ public class PosTransactionRequestDTO {
     @JsonProperty(required = true)
     @NotNull
     String terminalId;
+    @ApiModelProperty(value = "${swagger.transactionRequest.merchantId}", required = true)
+    @JsonProperty(required = true)
+    @NotNull
+    String merchantId;
 
 }
