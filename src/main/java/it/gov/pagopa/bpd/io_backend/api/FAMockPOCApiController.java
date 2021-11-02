@@ -80,6 +80,8 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 			BeanUtils.copyProperties(transaction,request);
 
 			request.setAuthCode(transaction.getIdTrxIssuer());
+			request.setBinCard(transaction.getBin());
+			request.setVatNumber(transaction.getMerchantVatNumber());
 		}
 
 //		String transactionId = request.getAmount().toString()
