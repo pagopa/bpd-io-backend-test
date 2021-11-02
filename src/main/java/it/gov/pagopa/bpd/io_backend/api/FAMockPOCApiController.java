@@ -78,13 +78,15 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		}else{
 			request = new PosTransactionRequestDTO();
 			BeanUtils.copyProperties(transaction,request);
+
+			request.setAuthCode(transaction.getIdTrxIssuer());
 		}
 
-		String transactionId = request.getAmount().toString()
-				.concat(request.getTerminalId().toString())
-				.concat(request.getAcquirerId().toString())
-				.concat(request.getBinCard())
-				.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME));
+//		String transactionId = request.getAmount().toString()
+//				.concat(request.getTerminalId().toString())
+//				.concat(request.getAcquirerId().toString())
+//				.concat(request.getBinCard())
+//				.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME));
 
 		transactionRestClient.createPosTransaction(request);
 	}
