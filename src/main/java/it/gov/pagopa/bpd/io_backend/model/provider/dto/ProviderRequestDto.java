@@ -1,4 +1,4 @@
-package it.gov.pagopa.bpd.io_backend.model.provider;
+package it.gov.pagopa.bpd.io_backend.model.provider.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
