@@ -15,6 +15,8 @@ public class InvoiceProviderResource {
     private OffsetDateTime trxDate;
     private String authCode;
     private BigDecimal amount;
+    private String idTrxAcquirer;
+    private String fiscalCode;
     private InvoiceProviderResource.Status invoiceStatus;
     private String invoiceCode;
     private OffsetDateTime invoiceStatusDate;

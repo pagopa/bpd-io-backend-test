@@ -39,4 +39,12 @@ public class InvoiceRequestDto {
     @JsonProperty(required = true)
     private BigDecimal amount;
 
+    @NotNull
+    @JsonProperty(required = true)
+    private String idTrxAcquirer;
+
+    @NotNull
+    @JsonProperty(required = true)
+    private String fiscalCode;
+
 }
