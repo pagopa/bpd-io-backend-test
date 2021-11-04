@@ -3,6 +3,7 @@ package it.gov.pagopa.bpd.io_backend.event.model;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 /**
  * Model for transaction to be sent in the outbound channel
@@ -19,7 +20,7 @@ public class Transaction {
 
     String acquirerCode;
 
-    String trxDate;
+    OffsetDateTime trxDate;
 
     String hpan;
 
