@@ -25,7 +25,8 @@ public class InvoiceProviderResource {
 
     public enum Status {
         EMESSA,
-        NON_EMESSA
+        NON_EMESSA,
+        DA_EMETTERE
     }
 
     public enum Reason {
