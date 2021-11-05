@@ -15,19 +15,23 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(of = {"idTrxAcquirer", "acquirerCode", "trxDate"}, callSuper = false)
 public class RegisterTransaction {
 
-    String trxDate;//id
+    String trxDate;
 
-    String idTrxIssuer;//id
+    String idTrxIssuer;
 
-    BigDecimal amount;//id
+    BigDecimal amount;
 
-    String terminalId;//id
+    String terminalId;
 
-    String bin;//id
+    String bin;
 
-    String merchantVatNumber;//
+    String merchantVatNumber;
 
-    PosType posType;//
+    PosType posType;
+
+    Long acquirerId;
+
+    String merchantId;
 
     public enum PosType {
         ASSERVED_POS,

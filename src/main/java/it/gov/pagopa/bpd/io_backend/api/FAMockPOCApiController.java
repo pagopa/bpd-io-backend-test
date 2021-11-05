@@ -81,13 +81,18 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		}else{
 			request = new PosTransactionRequestDTO();
 			BeanUtils.copyProperties(transaction,request);
+
+			request.setTrxDate(OffsetDateTime.parse(transaction.getTrxDate()));
+			request.setAuthCode(transaction.getIdTrxIssuer());
+			request.setBinCard(transaction.getBin());
+			request.setVatNumber(transaction.getMerchantVatNumber());
 		}
 
-		String transactionId = request.getAmount().toString()
-				.concat(request.getTerminalId().toString())
-				.concat(request.getAcquirerId().toString())
-				.concat(request.getBinCard())
-				.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME));
+//		String transactionId = request.getAmount().toString()
+//				.concat(request.getTerminalId().toString())
+//				.concat(request.getAcquirerId().toString())
+//				.concat(request.getBinCard())
+//				.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME));
 
 		transactionRestClient.createPosTransaction(request);
 	}
@@ -150,7 +155,7 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		return new Transaction().builder()
 				.idTrxAcquirer("1")
 				.acquirerCode("001")
-				.trxDate("2020-04-09T16:22:45.304Z")
+				.trxDate(OffsetDateTime.parse("2020-04-09T16:22:45.304Z",DateTimeFormatter.ISO_DATE_TIME))
 				.amount(BigDecimal.valueOf(1313.13))
 				.operationType("00")
 				.hpan("hpan")
