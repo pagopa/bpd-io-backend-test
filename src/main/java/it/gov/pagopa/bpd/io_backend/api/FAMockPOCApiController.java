@@ -6,11 +6,13 @@ import eu.sia.meda.event.transformer.SimpleEventResponseTransformer;
 import it.gov.pagopa.bpd.io_backend.event.model.RegisterTransaction;
 import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
 import it.gov.pagopa.bpd.io_backend.event.publisher.CsvTransactionPublisherConnector;
-import it.gov.pagopa.bpd.io_backend.rest.model.transaction.PosTransactionRequestDTO;
-import it.gov.pagopa.bpd.io_backend.rest.transaction.TransactionRestClient;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockAddress;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
-import it.gov.pagopa.bpd.io_backend.model.provider.ProviderRequestDto;
+import it.gov.pagopa.bpd.io_backend.model.provider.dto.InvoiceRequestDto;
+import it.gov.pagopa.bpd.io_backend.model.provider.dto.ProviderRequestDto;
+import it.gov.pagopa.bpd.io_backend.model.provider.resource.InvoiceProviderResource;
+import it.gov.pagopa.bpd.io_backend.rest.model.transaction.PosTransactionRequestDTO;
+import it.gov.pagopa.bpd.io_backend.rest.transaction.TransactionRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -23,10 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-28T07:23:25.920Z[GMT]")
 @RestController
@@ -98,6 +101,35 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	public HttpStatus sendTransactionDetails(@Valid ProviderRequestDto request) {
 		return HttpStatus.OK;
 	}
+
+	@Override
+	public InvoiceProviderResource getInvoiceDetails(@Valid InvoiceRequestDto request) {
+
+		InvoiceProviderResource resource = new InvoiceProviderResource();
+		resource.setAuthCode(request.getAuthCode());
+		resource.setAmount(request.getAmount());
+		resource.setTrxDate(request.getTrxDate());
+		resource.setBinCard(request.getBinCard());
+		resource.setTerminalId(request.getTerminalId());
+		resource.setInvoiceStatusDate(OffsetDateTime.now());
+		resource.setInvoiceCode(Long.toString(resource.getInvoiceStatusDate().toInstant().toEpochMilli()));
+		boolean evenAmount = new BigDecimal(String.valueOf(request.getAmount())).longValue() % 2 == 0;
+		if (!evenAmount) {
+			resource.setInvoiceStatus(InvoiceProviderResource.Status.NON_EMESSA);
+			resource.setInvoiceRejectReason(getRandomReason().code());
+		} else resource.setInvoiceStatus(InvoiceProviderResource.Status.EMESSA);
+
+		return resource;
+	}
+
+	private InvoiceProviderResource.Reason getRandomReason() {
+
+		InvoiceProviderResource.Reason[] reason = InvoiceProviderResource.Reason.values();
+		Random random = new Random();
+		return reason[random.nextInt(reason.length)];
+
+	}
+
 
 	@Override
 	public ResponseEntity<MockPerson> datiAnagraficiPersonaFisica(final String fiscalCode) throws UnsupportedEncodingException {

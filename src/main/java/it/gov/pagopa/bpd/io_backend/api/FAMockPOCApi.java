@@ -4,7 +4,9 @@ import io.swagger.annotations.Api;
 import it.gov.pagopa.bpd.io_backend.event.model.RegisterTransaction;
 import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
-import it.gov.pagopa.bpd.io_backend.model.provider.ProviderRequestDto;
+import it.gov.pagopa.bpd.io_backend.model.provider.dto.InvoiceRequestDto;
+import it.gov.pagopa.bpd.io_backend.model.provider.dto.ProviderRequestDto;
+import it.gov.pagopa.bpd.io_backend.model.provider.resource.InvoiceProviderResource;
 import it.gov.pagopa.bpd.io_backend.util.Constants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,9 @@ public interface FAMockPOCApi {
     @PostMapping(value = "/provider/invoice/request", produces = {"application/json", "application/problem+json"})
     @ResponseStatus(HttpStatus.OK)
     HttpStatus sendTransactionDetails(@RequestBody @Valid ProviderRequestDto request);
+
+    @PostMapping(value = "/provider/invoice/response")
+    InvoiceProviderResource getInvoiceDetails(@RequestBody @Valid InvoiceRequestDto request);
 
 }
 
