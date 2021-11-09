@@ -40,6 +40,11 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
@@ -78,22 +83,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-            <scope>compile</scope>
-        </dependency>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
@@ -141,15 +150,36 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>it.gov.pagopa.bpd.commons</groupId>-->
-<!--			<artifactId>bpd-commons-core</artifactId>-->
-<!--			<version>${bpd-commons.version}</version>-->
-<!--		</dependency>-->
+		<!--		<dependency>-->
+		<!--			<groupId>it.gov.pagopa.bpd.commons</groupId>-->
+		<!--			<artifactId>bpd-commons-core</artifactId>-->
+		<!--			<version>${bpd-commons.version}</version>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>it.gov.pagopa.bpd.commons.api</groupId>
 			<artifactId>bpd-commons-api-rest</artifactId>
 			<version>${bpd-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+			<artifactId>bpd-commons-integration-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+			<artifactId>bpd-commons-integration-jpa</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>org.springframework.boot</groupId>-->
+		<!--			<artifactId>spring-boot-starter-test</artifactId>-->
+		<!--			<scope>test</scope>-->
+		<!--		</dependency>-->
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+			<artifactId>bpd-commons-integration-rest</artifactId>
+			<version>${bpd-commons.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

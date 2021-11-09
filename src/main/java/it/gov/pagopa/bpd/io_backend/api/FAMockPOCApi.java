@@ -38,7 +38,7 @@ public interface FAMockPOCApi {
 
     @PostMapping(value = "/provider/invoice/request", produces = {"application/json", "application/problem+json"})
     @ResponseStatus(HttpStatus.OK)
-    HttpStatus sendTransactionDetails(@RequestBody @Valid ProviderRequestDto request);
+    ResponseEntity<HttpStatus> sendTransactionDetails(@RequestBody @Valid ProviderRequestDto request);
 
     @PostMapping(value = "/provider/invoice/response")
     InvoiceProviderResource getInvoiceDetails(@RequestBody @Valid InvoiceRequestDto request);

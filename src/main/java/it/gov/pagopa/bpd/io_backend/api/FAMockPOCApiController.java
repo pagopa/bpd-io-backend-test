@@ -13,6 +13,7 @@ import it.gov.pagopa.bpd.io_backend.model.provider.dto.ProviderRequestDto;
 import it.gov.pagopa.bpd.io_backend.model.provider.resource.InvoiceProviderResource;
 import it.gov.pagopa.bpd.io_backend.rest.model.transaction.PosTransactionRequestDTO;
 import it.gov.pagopa.bpd.io_backend.rest.transaction.TransactionRestClient;
+import it.gov.pagopa.bpd.io_backend.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -46,19 +47,22 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	private final SimpleEventResponseTransformer simpleEventResponseTransformer;
 
 	private final TransactionRestClient transactionRestClient;
+	private TransactionService transactionService;
 
 	@Autowired
 	public FAMockPOCApiController(HttpServletRequest request,
 								  CsvTransactionPublisherConnector transactionPublisherConnector,
 								  SimpleEventRequestTransformer<Transaction> simpleEventRequestTransformer,
 								  SimpleEventResponseTransformer simpleEventResponseTransformer,
-								  TransactionRestClient transactionRestClient
+								  TransactionRestClient transactionRestClient,
+								  TransactionService transactionService
 	) {
 		this.request = request;
-		this.transactionPublisherConnector=transactionPublisherConnector;
-		this.simpleEventRequestTransformer=simpleEventRequestTransformer;
-		this.simpleEventResponseTransformer=simpleEventResponseTransformer;
-		this.transactionRestClient=transactionRestClient;
+		this.transactionPublisherConnector = transactionPublisherConnector;
+		this.simpleEventRequestTransformer = simpleEventRequestTransformer;
+		this.simpleEventResponseTransformer = simpleEventResponseTransformer;
+		this.transactionRestClient = transactionRestClient;
+		this.transactionService = transactionService;
 	}
 
 	public void sendRTDTransaction(Transaction transaction) {
@@ -78,11 +82,11 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		PosTransactionRequestDTO request = null;
 		if (transaction==null) {
 			request = getMockPosTransactionRequest("S".equals(posType) ? RegisterTransaction.PosType.STAND_ALONE_POS : RegisterTransaction.PosType.ASSERVED_POS);
-		}else{
+		}else {
 			request = new PosTransactionRequestDTO();
-			BeanUtils.copyProperties(transaction,request);
+			BeanUtils.copyProperties(transaction, request);
 
-			request.setTrxDate(OffsetDateTime.parse(transaction.getTrxDate()));
+			request.setTrxDate(transaction.getTrxDate());
 			request.setAuthCode(transaction.getIdTrxIssuer());
 			request.setBinCard(transaction.getBin());
 			request.setVatNumber(transaction.getMerchantVatNumber());
@@ -95,11 +99,16 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 //				.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME));
 
 		transactionRestClient.createPosTransaction(request);
+		transactionService.createInvoiceTransaction(request);
 	}
 
 	@Override
-	public HttpStatus sendTransactionDetails(@Valid ProviderRequestDto request) {
-		return HttpStatus.OK;
+	public ResponseEntity<HttpStatus> sendTransactionDetails(@Valid ProviderRequestDto request) {
+		if (transactionService.find(request.getAuthCode(), request.getTrxDate(), request.getTerminalId(),
+				request.getAmount(), request.getBinCard())) {
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 	@Override
@@ -112,12 +121,14 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		resource.setBinCard(request.getBinCard());
 		resource.setTerminalId(request.getTerminalId());
 		resource.setInvoiceStatusDate(OffsetDateTime.now());
-		resource.setInvoiceCode(Long.toString(resource.getInvoiceStatusDate().toInstant().toEpochMilli()));
 		boolean evenAmount = new BigDecimal(String.valueOf(request.getAmount())).longValue() % 2 == 0;
 		if (!evenAmount) {
 			resource.setInvoiceStatus(InvoiceProviderResource.Status.NON_EMESSA);
 			resource.setInvoiceRejectReason(getRandomReason().code());
-		} else resource.setInvoiceStatus(InvoiceProviderResource.Status.EMESSA);
+		} else {
+			resource.setInvoiceStatus(InvoiceProviderResource.Status.EMESSA);
+			resource.setInvoiceCode(Long.toString(resource.getInvoiceStatusDate().toInstant().toEpochMilli()));
+		}
 
 		return resource;
 	}
