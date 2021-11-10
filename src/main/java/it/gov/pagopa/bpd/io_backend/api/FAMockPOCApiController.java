@@ -6,13 +6,14 @@ import eu.sia.meda.event.transformer.SimpleEventResponseTransformer;
 import it.gov.pagopa.bpd.io_backend.event.model.RegisterTransaction;
 import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
 import it.gov.pagopa.bpd.io_backend.event.publisher.CsvTransactionPublisherConnector;
+import it.gov.pagopa.bpd.io_backend.jpa.model.TransactionDetails;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockAddress;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.InvoiceRequestDto;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.ProviderRequestDto;
 import it.gov.pagopa.bpd.io_backend.model.provider.resource.InvoiceProviderResource;
-import it.gov.pagopa.bpd.io_backend.rest.model.transaction.PosTransactionRequestDTO;
 import it.gov.pagopa.bpd.io_backend.rest.transaction.TransactionRestClient;
+import it.gov.pagopa.bpd.io_backend.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -46,19 +47,22 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	private final SimpleEventResponseTransformer simpleEventResponseTransformer;
 
 	private final TransactionRestClient transactionRestClient;
+	private TransactionService transactionService;
 
 	@Autowired
 	public FAMockPOCApiController(HttpServletRequest request,
 								  CsvTransactionPublisherConnector transactionPublisherConnector,
 								  SimpleEventRequestTransformer<Transaction> simpleEventRequestTransformer,
 								  SimpleEventResponseTransformer simpleEventResponseTransformer,
-								  TransactionRestClient transactionRestClient
+								  TransactionRestClient transactionRestClient,
+								  TransactionService transactionService
 	) {
 		this.request = request;
-		this.transactionPublisherConnector=transactionPublisherConnector;
-		this.simpleEventRequestTransformer=simpleEventRequestTransformer;
-		this.simpleEventResponseTransformer=simpleEventResponseTransformer;
-		this.transactionRestClient=transactionRestClient;
+		this.transactionPublisherConnector = transactionPublisherConnector;
+		this.simpleEventRequestTransformer = simpleEventRequestTransformer;
+		this.simpleEventResponseTransformer = simpleEventResponseTransformer;
+		this.transactionRestClient = transactionRestClient;
+		this.transactionService = transactionService;
 	}
 
 	public void sendRTDTransaction(Transaction transaction) {
@@ -75,31 +79,38 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	@Override
 	public void cashRegisterSender(RegisterTransaction transaction, String posType) {
 
-		PosTransactionRequestDTO request = null;
-		if (transaction==null) {
+		TransactionDetails request = null;
+		if (transaction == null) {
 			request = getMockPosTransactionRequest("S".equals(posType) ? RegisterTransaction.PosType.STAND_ALONE_POS : RegisterTransaction.PosType.ASSERVED_POS);
-		}else{
-			request = new PosTransactionRequestDTO();
-			BeanUtils.copyProperties(transaction,request);
+		} else {
+			request = new TransactionDetails();
+			BeanUtils.copyProperties(transaction, request);
 
-			request.setTrxDate(OffsetDateTime.parse(transaction.getTrxDate()));
+			request.setTrxDate(transaction.getTrxDate());
 			request.setAuthCode(transaction.getIdTrxIssuer());
 			request.setBinCard(transaction.getBin());
-			request.setVatNumber(transaction.getMerchantVatNumber());
+			request.setAmount(transaction.getAmount());
+			request.setAcquirerId(transaction.getAcquirerId());
+			request.setTerminalId(transaction.getTerminalId());
+			request.setTransactionId(request.getAmount().toString()
+					.concat(request.getTerminalId().toString())
+					.concat(request.getAcquirerId().toString())
+					.concat(request.getBinCard())
+					.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME)));
 		}
 
-//		String transactionId = request.getAmount().toString()
-//				.concat(request.getTerminalId().toString())
-//				.concat(request.getAcquirerId().toString())
-//				.concat(request.getBinCard())
-//				.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME));
 
-		transactionRestClient.createPosTransaction(request);
+//		transactionRestClient.createPosTransaction(request);
+		transactionService.createInvoiceTransaction(request);
 	}
 
 	@Override
-	public HttpStatus sendTransactionDetails(@Valid ProviderRequestDto request) {
-		return HttpStatus.OK;
+	public ResponseEntity<HttpStatus> sendTransactionDetails(@Valid ProviderRequestDto request) {
+		if (transactionService.find(request.getAuthCode(), request.getTrxDate(), request.getTerminalId(),
+				request.getAmount(), request.getBinCard())) {
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 	@Override
@@ -112,12 +123,14 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		resource.setBinCard(request.getBinCard());
 		resource.setTerminalId(request.getTerminalId());
 		resource.setInvoiceStatusDate(OffsetDateTime.now());
-		resource.setInvoiceCode(Long.toString(resource.getInvoiceStatusDate().toInstant().toEpochMilli()));
 		boolean evenAmount = new BigDecimal(String.valueOf(request.getAmount())).longValue() % 2 == 0;
 		if (!evenAmount) {
 			resource.setInvoiceStatus(InvoiceProviderResource.Status.NON_EMESSA);
 			resource.setInvoiceRejectReason(getRandomReason().code());
-		} else resource.setInvoiceStatus(InvoiceProviderResource.Status.EMESSA);
+		} else {
+			resource.setInvoiceStatus(InvoiceProviderResource.Status.EMESSA);
+			resource.setInvoiceCode(Long.toString(resource.getInvoiceStatusDate().toInstant().toEpochMilli()));
+		}
 
 		return resource;
 	}
@@ -171,15 +184,16 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 				.build();
 	}
 
-	private PosTransactionRequestDTO getMockPosTransactionRequest(RegisterTransaction.PosType posType) {
-		return new PosTransactionRequestDTO().builder()
+	private TransactionDetails getMockPosTransactionRequest(RegisterTransaction.PosType posType) {
+		return new TransactionDetails().builder()
 				.trxDate(OffsetDateTime.parse("2020-04-09T16:22:45.304Z", DateTimeFormatter.ISO_DATE_TIME))
 				.amount(new BigDecimal("1313.13"))
 				.terminalId("0")
 				.binCard("1234")
-				.vatNumber("12345678977")
-				.acquirerId(12385L)
+//				.vatNumber("12345678977")
+				.acquirerId("12385L")
 				.authCode("12345685")
+				.transactionId("transactionId")
 				.build();
 	}
 
