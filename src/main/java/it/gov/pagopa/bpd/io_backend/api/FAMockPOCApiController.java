@@ -6,12 +6,12 @@ import eu.sia.meda.event.transformer.SimpleEventResponseTransformer;
 import it.gov.pagopa.bpd.io_backend.event.model.RegisterTransaction;
 import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
 import it.gov.pagopa.bpd.io_backend.event.publisher.CsvTransactionPublisherConnector;
+import it.gov.pagopa.bpd.io_backend.jpa.model.TransactionDetails;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockAddress;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.InvoiceRequestDto;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.ProviderRequestDto;
 import it.gov.pagopa.bpd.io_backend.model.provider.resource.InvoiceProviderResource;
-import it.gov.pagopa.bpd.io_backend.rest.model.transaction.PosTransactionRequestDTO;
 import it.gov.pagopa.bpd.io_backend.rest.transaction.TransactionRestClient;
 import it.gov.pagopa.bpd.io_backend.service.TransactionService;
 import org.slf4j.Logger;
@@ -79,26 +79,28 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	@Override
 	public void cashRegisterSender(RegisterTransaction transaction, String posType) {
 
-		PosTransactionRequestDTO request = null;
-		if (transaction==null) {
+		TransactionDetails request = null;
+		if (transaction == null) {
 			request = getMockPosTransactionRequest("S".equals(posType) ? RegisterTransaction.PosType.STAND_ALONE_POS : RegisterTransaction.PosType.ASSERVED_POS);
-		}else {
-			request = new PosTransactionRequestDTO();
+		} else {
+			request = new TransactionDetails();
 			BeanUtils.copyProperties(transaction, request);
 
 			request.setTrxDate(transaction.getTrxDate());
 			request.setAuthCode(transaction.getIdTrxIssuer());
 			request.setBinCard(transaction.getBin());
-			request.setVatNumber(transaction.getMerchantVatNumber());
+			request.setAmount(transaction.getAmount());
+			request.setAcquirerId(transaction.getAcquirerId());
+			request.setTerminalId(transaction.getTerminalId());
+			request.setTransactionId(request.getAmount().toString()
+					.concat(request.getTerminalId().toString())
+					.concat(request.getAcquirerId().toString())
+					.concat(request.getBinCard())
+					.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME)));
 		}
 
-//		String transactionId = request.getAmount().toString()
-//				.concat(request.getTerminalId().toString())
-//				.concat(request.getAcquirerId().toString())
-//				.concat(request.getBinCard())
-//				.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME));
 
-		transactionRestClient.createPosTransaction(request);
+//		transactionRestClient.createPosTransaction(request);
 		transactionService.createInvoiceTransaction(request);
 	}
 
@@ -182,15 +184,16 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 				.build();
 	}
 
-	private PosTransactionRequestDTO getMockPosTransactionRequest(RegisterTransaction.PosType posType) {
-		return new PosTransactionRequestDTO().builder()
+	private TransactionDetails getMockPosTransactionRequest(RegisterTransaction.PosType posType) {
+		return new TransactionDetails().builder()
 				.trxDate(OffsetDateTime.parse("2020-04-09T16:22:45.304Z", DateTimeFormatter.ISO_DATE_TIME))
 				.amount(new BigDecimal("1313.13"))
 				.terminalId("0")
 				.binCard("1234")
-				.vatNumber("12345678977")
-				.acquirerId(12385L)
+//				.vatNumber("12345678977")
+				.acquirerId("12385L")
 				.authCode("12345685")
+				.transactionId("transactionId")
 				.build();
 	}
 

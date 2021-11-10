@@ -2,7 +2,6 @@ package it.gov.pagopa.bpd.io_backend.service;
 
 import it.gov.pagopa.bpd.io_backend.jpa.TransactionDetailsDAO;
 import it.gov.pagopa.bpd.io_backend.jpa.model.TransactionDetails;
-import it.gov.pagopa.bpd.io_backend.rest.model.transaction.PosTransactionRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,16 +23,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void createInvoiceTransaction(PosTransactionRequestDTO request) {
-
-        TransactionDetails entity = new TransactionDetails();
-        entity.setAmount(request.getAmount());
-        entity.setBinCard(request.getBinCard());
-        entity.setAuthCode(request.getAuthCode());
-        entity.setTrxDate(request.getTrxDate());
-        entity.setTerminalId(request.getTerminalId());
-
-        transactionDetailsDAO.save(entity);
+    public void createInvoiceTransaction(TransactionDetails request) {
+        transactionDetailsDAO.save(request);
     }
 
     @Override

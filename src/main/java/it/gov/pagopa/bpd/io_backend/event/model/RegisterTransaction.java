@@ -30,7 +30,7 @@ public class RegisterTransaction {
 
     PosType posType;
 
-    Long acquirerId;
+    String acquirerId;
 
     String merchantId;
 

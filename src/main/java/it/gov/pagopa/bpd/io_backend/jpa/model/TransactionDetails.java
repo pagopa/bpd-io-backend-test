@@ -2,10 +2,7 @@ package it.gov.pagopa.bpd.io_backend.jpa.model;
 
 
 import it.gov.pagopa.bpd.io_backend.jpa.util.TransactionDetailsCompositeKey;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +11,7 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(TransactionDetailsCompositeKey.class)
@@ -40,5 +38,30 @@ public class TransactionDetails implements Serializable {
     @Id
     @Column(name = "auth_code_s")
     private String authCode;
+
+    @Column(name = "transaction_id_s")
+    private String transactionId;
+
+    @Column(name = "customer_data_s")
+    private String customerData;
+
+    @Column(name = "merchant_data_s")
+    private String merchantData;
+
+    @Column(name = "customer_address_s")
+    private String customerAddress;
+
+    @Column(name = "merchant_address_s")
+    private String merchantAddress;
+
+    @Column(name = "payment_lable_s")
+    private String paymentLable;
+
+    @Column(name = "dest_code_s")
+    private String destCode;
+
+    @Column(name = "acquirer_id_s")
+    private String acquirerId;
+
 
 }
