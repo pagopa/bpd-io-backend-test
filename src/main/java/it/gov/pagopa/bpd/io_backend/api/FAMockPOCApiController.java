@@ -114,7 +114,12 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	}
 
 	@Override
-	public InvoiceProviderResource getInvoiceDetails(@Valid InvoiceRequestDto request) {
+	public ResponseEntity<InvoiceProviderResource> getInvoiceDetails(@Valid InvoiceRequestDto request) {
+
+		if (!transactionService.find(request.getAuthCode(), request.getTrxDate(), request.getTerminalId(),
+				request.getAmount(), request.getBinCard())) {
+			return ResponseEntity.notFound().build();
+		}
 
 		InvoiceProviderResource resource = new InvoiceProviderResource();
 		resource.setAuthCode(request.getAuthCode());
@@ -132,7 +137,7 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 			resource.setInvoiceCode(Long.toString(resource.getInvoiceStatusDate().toInstant().toEpochMilli()));
 		}
 
-		return resource;
+		return ResponseEntity.ok(resource);
 	}
 
 	private InvoiceProviderResource.Reason getRandomReason() {
