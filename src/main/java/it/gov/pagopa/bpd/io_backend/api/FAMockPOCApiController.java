@@ -103,6 +103,7 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 		}
 
 		BeanUtils.copyProperties(request,transactionRequest);
+		transactionRequest.setVatNumber(transaction.getMerchantVatNumber());
 
 		transactionRestClient.createPosTransaction(transactionRequest);
 
