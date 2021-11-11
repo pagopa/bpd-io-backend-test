@@ -163,10 +163,12 @@
 		<dependency>
 			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
 			<artifactId>bpd-commons-integration-jpa</artifactId>
+			<version>${bpd-commons.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
 			<artifactId>bpd-commons-integration-jpa</artifactId>
+			<version>${bpd-commons.version}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>

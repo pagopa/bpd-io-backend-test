@@ -12,6 +12,7 @@ import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.InvoiceRequestDto;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.ProviderRequestDto;
 import it.gov.pagopa.bpd.io_backend.model.provider.resource.InvoiceProviderResource;
+import it.gov.pagopa.bpd.io_backend.rest.model.transaction.PosTransactionRequestDTO;
 import it.gov.pagopa.bpd.io_backend.rest.transaction.TransactionRestClient;
 import it.gov.pagopa.bpd.io_backend.service.TransactionService;
 import org.slf4j.Logger;
@@ -80,6 +81,8 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 	public void cashRegisterSender(RegisterTransaction transaction, String posType) {
 
 		TransactionDetails request = null;
+		PosTransactionRequestDTO transactionRequest = new PosTransactionRequestDTO();
+
 		if (transaction == null) {
 			request = getMockPosTransactionRequest("S".equals(posType) ? RegisterTransaction.PosType.STAND_ALONE_POS : RegisterTransaction.PosType.ASSERVED_POS);
 		} else {
@@ -93,14 +96,16 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 			request.setAcquirerId(transaction.getAcquirerId());
 			request.setTerminalId(transaction.getTerminalId());
 			request.setTransactionId(request.getAmount().toString()
-					.concat(request.getTerminalId().toString())
-					.concat(request.getAcquirerId().toString())
+					.concat(request.getTerminalId())
+					.concat(request.getAuthCode())
 					.concat(request.getBinCard())
 					.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME)));
 		}
 
+		BeanUtils.copyProperties(request,transactionRequest);
 
-//		transactionRestClient.createPosTransaction(request);
+		transactionRestClient.createPosTransaction(transactionRequest);
+
 		transactionService.createInvoiceTransaction(request);
 	}
 
