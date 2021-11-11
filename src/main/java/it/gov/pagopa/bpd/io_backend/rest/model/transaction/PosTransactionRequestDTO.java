@@ -39,5 +39,8 @@ public class PosTransactionRequestDTO {
     @JsonProperty(required = true)
     @NotNull
     String transactionId;
+    @JsonProperty(required = true)
+    @NotNull
+    String vatNumber;
 
 }
