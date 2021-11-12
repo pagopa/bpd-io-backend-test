@@ -38,7 +38,7 @@ public class TransactionServiceImpl implements TransactionService {
         log.info("Searching transactionRequest: authCode [{}], trxDate [{}], terminalId [{}], amount [{}], binCard [{}] ",
                 authCode, comparingDate, terminalId, amount, binCard);
 
-        Optional<TransactionDetails> transaction = transactionDetailsDAO.findTransaction(authCode, amount, terminalId, comparingDate, authCode);
+        Optional<TransactionDetails> transaction = transactionDetailsDAO.findTransaction(binCard, amount, authCode, comparingDate, terminalId);
         return transaction.isPresent();
     }
 }
