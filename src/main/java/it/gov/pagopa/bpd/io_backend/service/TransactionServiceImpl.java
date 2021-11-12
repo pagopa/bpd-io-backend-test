@@ -25,7 +25,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void createInvoiceTransaction(TransactionDetails request) {
 
-        log.debug("Saving transactionRequest: authCode [{}], trxDate [{}], terminalId [{}], amount [{}], binCard [{}] ",
+        log.info("Saving transactionRequest: authCode [{}], trxDate [{}], terminalId [{}], amount [{}], binCard [{}] ",
                 request.getAuthCode(), request.getTrxDate(), request.getTerminalId(), request.getAmount(), request.getBinCard());
 
         transactionDetailsDAO.save(request);
@@ -35,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
     public boolean find(String authCode, OffsetDateTime trxDate, String terminalId, BigDecimal amount, String binCard) {
         Date comparingDate = java.sql.Date.valueOf(trxDate.toLocalDate());
 
-        log.debug("Searching transactionRequest: authCode [{}], trxDate [{}], terminalId [{}], amount [{}], binCard [{}] ",
+        log.info("Searching transactionRequest: authCode [{}], trxDate [{}], terminalId [{}], amount [{}], binCard [{}] ",
                 authCode, comparingDate, terminalId, amount, binCard);
 
         Optional<TransactionDetails> transaction = transactionDetailsDAO.findTransaction(authCode, amount, terminalId, comparingDate, authCode);
