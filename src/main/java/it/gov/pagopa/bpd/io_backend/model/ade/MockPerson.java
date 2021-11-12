@@ -14,10 +14,10 @@ public class MockPerson {
     @JsonProperty("surname")
     private String surname = null;
 
-    @JsonProperty("fiscal_code")
+    @JsonProperty("fiscalCode")
     private String fiscalCode = null;
 
-    @JsonProperty("fiscal_address")
+    @JsonProperty("fiscalAddress")
     private MockAddress fiscalAddress = null;
 
 }
