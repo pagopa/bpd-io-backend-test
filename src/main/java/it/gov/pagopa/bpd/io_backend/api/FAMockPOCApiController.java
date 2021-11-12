@@ -208,4 +208,9 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 				.build();
 	}
 
+	@Override
+	public ResponseEntity<HttpStatus> checkMerchantProvider(String vatNumber) {
+		return ResponseEntity.ok().build();
+	}
+
 }
