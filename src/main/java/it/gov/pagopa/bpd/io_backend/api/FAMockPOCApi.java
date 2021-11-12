@@ -44,7 +44,7 @@ public interface FAMockPOCApi {
     @PostMapping(value = "/provider/invoice/response")
     ResponseEntity<InvoiceProviderResource> getInvoiceDetails(@RequestBody @Valid InvoiceRequestDto request);
 
-    @PostMapping(value = "/merchant/check/{vatNumber}")
+    @GetMapping(value = "/merchant/check/{vatNumber}")
     ResponseEntity<CheckMerchantResource> checkMerchantProvider(@PathVariable String vatNumber);
 
 }
