@@ -11,7 +11,7 @@ public class MockAddress {
     @JsonProperty("street")
     private String street = null;
 
-    @JsonProperty("house_number")
+    @JsonProperty("houseNumber")
     private String houseNumber = null;
 
     @JsonProperty("city")
