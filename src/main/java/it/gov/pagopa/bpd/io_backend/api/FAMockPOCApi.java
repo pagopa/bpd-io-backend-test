@@ -3,6 +3,7 @@ package it.gov.pagopa.bpd.io_backend.api;
 import io.swagger.annotations.Api;
 import it.gov.pagopa.bpd.io_backend.event.model.RegisterTransaction;
 import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
+import it.gov.pagopa.bpd.io_backend.merchant.model.CheckMerchantResource;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.InvoiceRequestDto;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.ProviderRequestDto;
@@ -42,6 +43,9 @@ public interface FAMockPOCApi {
 
     @PostMapping(value = "/provider/invoice/response")
     ResponseEntity<InvoiceProviderResource> getInvoiceDetails(@RequestBody @Valid InvoiceRequestDto request);
+
+    @GetMapping(value = "/merchant/check/{vatNumber}")
+    ResponseEntity<CheckMerchantResource> checkMerchantProvider(@PathVariable String vatNumber);
 
 }
 

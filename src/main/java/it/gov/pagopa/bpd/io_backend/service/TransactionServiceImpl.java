@@ -24,13 +24,21 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void createInvoiceTransaction(TransactionDetails request) {
+
+        log.info("Saving transactionRequest: authCode [{}], trxDate [{}], terminalId [{}], amount [{}], binCard [{}] ",
+                request.getAuthCode(), request.getTrxDate(), request.getTerminalId(), request.getAmount(), request.getBinCard());
+
         transactionDetailsDAO.save(request);
     }
 
     @Override
     public boolean find(String authCode, OffsetDateTime trxDate, String terminalId, BigDecimal amount, String binCard) {
         Date comparingDate = java.sql.Date.valueOf(trxDate.toLocalDate());
-        Optional<TransactionDetails> transaction = transactionDetailsDAO.findTransaction(authCode, amount, terminalId, comparingDate, authCode);
+
+        log.info("Searching transactionRequest: authCode [{}], trxDate [{}], terminalId [{}], amount [{}], binCard [{}] ",
+                authCode, comparingDate, terminalId, amount, binCard);
+
+        Optional<TransactionDetails> transaction = transactionDetailsDAO.findTransaction(binCard, amount, authCode, comparingDate, terminalId);
         return transaction.isPresent();
     }
 }

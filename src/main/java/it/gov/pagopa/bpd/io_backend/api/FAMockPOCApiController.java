@@ -7,6 +7,7 @@ import it.gov.pagopa.bpd.io_backend.event.model.RegisterTransaction;
 import it.gov.pagopa.bpd.io_backend.event.model.Transaction;
 import it.gov.pagopa.bpd.io_backend.event.publisher.CsvTransactionPublisherConnector;
 import it.gov.pagopa.bpd.io_backend.jpa.model.TransactionDetails;
+import it.gov.pagopa.bpd.io_backend.merchant.model.CheckMerchantResource;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockAddress;
 import it.gov.pagopa.bpd.io_backend.model.ade.MockPerson;
 import it.gov.pagopa.bpd.io_backend.model.provider.dto.InvoiceRequestDto;
@@ -206,6 +207,15 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 				.authCode("12345685")
 				.transactionId("transactionId")
 				.build();
+	}
+
+	@Override
+	public ResponseEntity<CheckMerchantResource> checkMerchantProvider(String vatNumber) {
+		CheckMerchantResource response = new CheckMerchantResource();
+		response.setResult(Boolean.TRUE);
+		response.setContractNumber(12345678L);
+
+		return ResponseEntity.ok(response);
 	}
 
 }
