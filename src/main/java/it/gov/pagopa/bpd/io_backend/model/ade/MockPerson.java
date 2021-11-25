@@ -9,15 +9,15 @@ import lombok.Data;
 public class MockPerson {
 
     @JsonProperty("name")
-    private String name = null;
+    private String name;
 
     @JsonProperty("surname")
-    private String surname = null;
+    private String surname;
 
     @JsonProperty("fiscalCode")
-    private String fiscalCode = null;
+    private String fiscalCode;
 
     @JsonProperty("fiscalAddress")
-    private MockAddress fiscalAddress = null;
+    private MockAddress fiscalAddress;
 
 }

@@ -12,17 +12,14 @@ import java.time.OffsetDateTime;
 public class ProviderRequestDto {
 
     @NotBlank
-    @NotNull
     @JsonProperty(required = true)
     private String transactionId;
 
     @NotBlank
-    @NotNull
     @JsonProperty(required = true)
     private String binCard;
 
     @NotBlank
-    @NotNull
     @JsonProperty(required = true)
     private String terminalId;
 
@@ -31,7 +28,6 @@ public class ProviderRequestDto {
     private OffsetDateTime trxDate;
 
     @NotBlank
-    @NotNull
     @JsonProperty(required = true)
     private String authCode;
 
@@ -40,32 +36,24 @@ public class ProviderRequestDto {
     private BigDecimal amount;
 
     @NotBlank
-    @NotNull
     @JsonProperty(required = true)
     private String customerData;
 
     @NotBlank
-    @NotNull
     @JsonProperty(required = true)
     private String merchantData;
 
-    @NotBlank
-    @NotNull
-    @JsonProperty(required = true)
+    @JsonProperty(required = false)
     private String customerAdress;
 
-    @NotBlank
-    @NotNull
-    @JsonProperty(required = true)
+    @JsonProperty(required = false)
     private String merchantAdress;
 
     @NotBlank
-    @NotNull
     @JsonProperty(required = true)
     private String paymentLabel;
 
     @NotBlank
-    @NotNull
     @JsonProperty(required = true)
     private String destCode;
 

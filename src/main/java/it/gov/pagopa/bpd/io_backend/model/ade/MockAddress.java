@@ -9,12 +9,12 @@ import lombok.Data;
 public class MockAddress {
 
     @JsonProperty("street")
-    private String street = null;
+    private String street;
 
     @JsonProperty("houseNumber")
-    private String houseNumber = null;
+    private String houseNumber;
 
     @JsonProperty("city")
-    private String city = null;
+    private String city;
 
 }
