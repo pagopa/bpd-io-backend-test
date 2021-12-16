@@ -42,5 +42,8 @@ public class PosTransactionRequestDTO {
     @JsonProperty(required = true)
     @NotNull
     String vatNumber;
+    @JsonProperty(required = true)
+    @NotNull
+    String contractId;
 
 }

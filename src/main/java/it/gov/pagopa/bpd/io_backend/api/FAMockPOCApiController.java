@@ -101,6 +101,7 @@ public class FAMockPOCApiController extends StatelessController implements FAMoc
 					.concat(request.getAuthCode())
 					.concat(request.getBinCard())
 					.concat(request.getTrxDate().format(DateTimeFormatter.ISO_DATE_TIME)));
+			request.setContractId(transaction.getContractId());
 		}
 
 		BeanUtils.copyProperties(request,transactionRequest);
