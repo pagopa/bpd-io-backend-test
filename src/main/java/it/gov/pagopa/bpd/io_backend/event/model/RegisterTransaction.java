@@ -34,6 +34,8 @@ public class RegisterTransaction {
 
     String merchantId;
 
+    String contractId;
+
     public enum PosType {
         ASSERVED_POS,
         STAND_ALONE_POS

@@ -63,5 +63,8 @@ public class TransactionDetails implements Serializable {
     @Column(name = "acquirer_id_s")
     private String acquirerId;
 
+    @Column(name = "contract_id_s")
+    private String contractId;
+
 
 }
