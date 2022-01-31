@@ -180,7 +180,7 @@ stages:
                     action: deploy
                     rolloutStatusTimeout: 120
                     kubernetesServiceConnection: ${{ variables.kubernetesServiceConnection }}
-                    namespace: '${{namespaceToDeploy}}'
+                    namespace: ${{namespaceToDeploy}}
                     manifests: |
                       $(Pipeline.Workspace)/manifests/pagoPa/$(deployment).yml
                       $(Pipeline.Workspace)/manifests/service.yml
