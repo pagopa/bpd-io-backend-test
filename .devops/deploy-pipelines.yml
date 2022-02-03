@@ -23,6 +23,15 @@ pr: none
 resources:
   - repo: self
 
+
+parameters:
+- name: namespaceToDeploy # name of the parameter; required
+  type: string # data type of the parameter; required
+  default: fa
+  values:
+  - fa
+  - bpd
+
 variables:
   dockerfileRelativePath: '$(DOCKERFILE)' # DockerfileV1
 
@@ -171,7 +180,7 @@ stages:
                     action: deploy
                     rolloutStatusTimeout: 120
                     kubernetesServiceConnection: ${{ variables.kubernetesServiceConnection }}
-                    namespace: '$(deployNamespace)'
+                    namespace: ${{parameters.namespaceToDeploy}}
                     manifests: |
                       $(Pipeline.Workspace)/manifests/pagoPa/$(deployment).yml
                       $(Pipeline.Workspace)/manifests/service.yml
