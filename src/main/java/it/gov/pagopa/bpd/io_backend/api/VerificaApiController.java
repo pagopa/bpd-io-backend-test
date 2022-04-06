@@ -44,6 +44,10 @@ public class VerificaApiController extends StatelessController implements Verifi
 		this.random = new Random();
 	}
 
+	public ResponseEntity<VerificaPartitaIva> getVAT(@PathVariable("partitaIva") final String partitaIva) {
+		return this.getPartitaIva(partitaIva);
+	}
+
 	public ResponseEntity<VerificaPartitaIva> getPartitaIva(@PathVariable("partitaIva") final String partitaIva) {
         final String accept = request.getHeader("Accept");
         if (//accept != null && accept.contains("application/json") &&
