@@ -27,3 +27,14 @@ spec:
                 optional: true
             - secretRef:
                 name: application-insights
+            - secretRef:
+                name: cstariobackendtest
+            - secretRef:
+                name: postgres-credentials
+          resources:
+            limits:
+              cpu: 500m
+              memory: 4Gi
+            requests:
+              cpu: 250m
+              memory: 2Gi
