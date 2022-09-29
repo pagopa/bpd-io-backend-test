@@ -27,6 +27,7 @@ public class IOSwaggerDocumentationConfig {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("it.gov.pagopa.bpd.io_backend.api")).build()
 				.directModelSubstitute(LocalTime.class, String.class)
+				.groupName("Swagger")
 				.apiInfo(apiInfo());
 	}
 

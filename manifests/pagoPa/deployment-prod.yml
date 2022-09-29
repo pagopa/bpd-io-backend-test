@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cstariobackendtest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cstariobackendtest
+  template:
+    metadata:
+      labels:
+        app: cstariobackendtest
+    spec:
+      containers:
+        - name: cstariobackendtest
+          image: cstarpacr.azurecr.io/cstariobackendtest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BPD_JWT_KEY
+              value: Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=
+          envFrom:
+            - configMapRef:
+                name: cstariobackendtest
+                optional: true
+            - secretRef:
+                name: application-insights
+            - secretRef:
+                name: cstariobackendtest
+            - secretRef:
+                name: postgres-credentials
+          resources:
+            limits:
+              cpu: 500m
+              memory: 4Gi
+            requests:
+              cpu: 250m
+              memory: 2Gi

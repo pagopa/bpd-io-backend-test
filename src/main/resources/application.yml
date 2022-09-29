@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${BACKEND_IO_SERVER_PORT:8080}
   contextPath: /
   tomcat:
     connection-timeout: ${BACKEND_IO_SERVER_CONNECTION_TIMEOUT:${SERVER_CONNECTION_TIMEOUT:}}
@@ -26,3 +26,17 @@ bpd:
     salt: ${BPD_HASH_SALT:SALT123}
   jwt:
     key: ${BPD_JWT_KEY:}
+
+spring:
+  application:
+    name: "bpd-backend-test-app"
+#  datasource:
+#    driver-class-name: "org.postgresql.Driver"
+#    url: ${POSTGRES_CONN_URL:jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB_NAME:}}
+#    username: ${POSTGRES_USERNAME:}
+#    password: ${POSTGRES_PASSWORD:}
+#    hikari:
+#      maximumPoolSize: ${POSTGRES_POOLSIZE:5}
+#      connectionTimeout: ${POSTGRES_TIMEOUT:6000}
+#      schema: ${POSTGRES_SCHEMA:}
+#      readOnly: false

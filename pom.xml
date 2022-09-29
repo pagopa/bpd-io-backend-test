@@ -2,23 +2,26 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.gov.pagopa.bpd.ms</groupId>
+		<version>2.0.1</version>
+		<artifactId>bpd-ms-starter-parent</artifactId>
+	</parent>
+
 	<groupId>it.gov.pagopa</groupId>
 	<artifactId>bpd-backend-io-auth</artifactId>
 	<packaging>jar</packaging>
 	<name>bpd-backend-io-auth</name>
-	<version>1.0.0</version>
+	<version>1.0.6</version>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<springfox-version>2.7.0</springfox-version>
+		<springfox-version>3.0.0</springfox-version>
+		<bpd-commons.version>2.0.1</bpd-commons.version>
 	</properties>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.6.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
-	</parent>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
@@ -36,6 +39,11 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -75,27 +83,128 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-            <scope>compile</scope>
-        </dependency>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.14</version>
 		</dependency>
 
+		<!-- dependency added to support JRE11 as execution runtime -->
+		<dependency>
+		    <groupId>jakarta.xml.bind</groupId>
+		    <artifactId>jakarta.xml.bind-api</artifactId>
+		    <version>2.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.sia.meda</groupId>
+			<artifactId>meda-arch-event</artifactId>
+			<version>2.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.plugin</groupId>-->
+<!--			<artifactId>spring-plugin-core</artifactId>-->
+<!--			<version>1.2.0.RELEASE</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+			<artifactId>bpd-commons-integration-rest</artifactId>
+			<version>${bpd-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+			<artifactId>bpd-commons-integration-rest</artifactId>
+			<version>${bpd-commons.version}</version>
+			<type>test-jar</type>
+		</dependency>
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons</groupId>
+			<artifactId>bpd-commons-base</artifactId>
+			<version>${bpd-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons</groupId>
+			<artifactId>bpd-commons-base</artifactId>
+			<version>${bpd-commons.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>it.gov.pagopa.bpd.commons</groupId>-->
+		<!--			<artifactId>bpd-commons-core</artifactId>-->
+		<!--			<version>${bpd-commons.version}</version>-->
+		<!--		</dependency>-->
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.api</groupId>
+			<artifactId>bpd-commons-api-rest</artifactId>
+			<version>${bpd-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+			<artifactId>bpd-commons-integration-jpa</artifactId>
+			<version>${bpd-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+			<artifactId>bpd-commons-integration-jpa</artifactId>
+			<version>${bpd-commons.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>org.springframework.boot</groupId>-->
+		<!--			<artifactId>spring-boot-starter-test</artifactId>-->
+		<!--			<scope>test</scope>-->
+		<!--		</dependency>-->
+		<dependency>
+			<groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+			<artifactId>bpd-commons-integration-rest</artifactId>
+			<version>${bpd-commons.version}</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>cstar</id>
+			<url>https://pkgs.dev.azure.com/pagopaspa/cstar-projects/_packaging/cstar/maven/v1</url>
+		</repository>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>cstar</id>
+			<url>https://pkgs.dev.azure.com/pagopaspa/cstar-projects/_packaging/cstar/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<scm>
+		<developerConnection>scm:git:https://github.com/pagopa/bpd-io-backend-test.git</developerConnection>
+		<tag>0.0.1</tag>
+	</scm>
 </project>

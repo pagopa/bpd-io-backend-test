@@ -1,19 +1,22 @@
-apiVersion : apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cstariobackendtest 
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: cstariobackendtest
   template:
     metadata:
       labels:
-        app: cstariobackendtest 
+        app: cstariobackendtest
     spec:
       containers:
-        - name: cstariobackendtest 
+        - name: cstariobackendtest
           image: cstarregistry.azurecr.io/cstariobackendtest
           ports:
-          - containerPort: 8080
+            - containerPort: 8080
           env:
             - name: BPD_JWT_KEY
               value: Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=
